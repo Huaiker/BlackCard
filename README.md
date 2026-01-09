@@ -1,4 +1,5 @@
 # BlackCard
+<<<<<<< HEAD
 
 [![Minecraft 1.20.1](https://img.shields.io/badge/Minecraft-1.20.1-green?logo=minecraft)](https://www.minecraft.net/)
 [![Forge 47.4.13+](https://img.shields.io/badge/Forge-47.4.13%2B-orange)](https://files.minecraftforge.net/)
@@ -83,3 +84,6 @@ If you want to modify the code or build the mod yourself:
 7. Launch Minecraft with Forge — your custom build will be loaded!
 
 > 💡 Tip: The first build may take several minutes as it downloads Minecraft and Forge files.
+=======
+A Fucking shit Minecraft mod made by AI,Add a ITEM to do sth
+>>>>>>> 98054762c69752676535be3db995ca0c95ceb063
