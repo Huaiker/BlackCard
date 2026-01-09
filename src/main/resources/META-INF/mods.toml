@@ -1,0 +1,33 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+
+[[mods]]
+modId="blackcard"
+version="1.0"
+displayName="BlackCard"
+description=""
+authors="Huaiker"
+credits="Thanks for Deepseek Qianwen,other people"
+logoFile="blackcard_logo.png"
+
+[[dependencies.blackcard]]
+modId="forge"
+mandatory=true
+versionRange="[47.4.13,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.blackcard]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.blackcard]]
+modId = "jei"
+mandatory = false
+versionRange = "[15,)"
+ordering = "NONE"
+side = "CLIENT"

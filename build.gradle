@@ -1,0 +1,93 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+version = '1.0.0'
+group = 'blackcard.blackcard'
+
+base {
+    archivesName = 'blackcard'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'blackcard'
+            mods {
+                blackcard {
+                    source sourceSets.main
+                }
+            }
+        }
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'blackcard'
+            mods {
+                blackcard {
+                    source sourceSets.main
+                }
+            }
+        }
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            args '--mod', 'blackcard', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            mods {
+                blackcard {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+// === JEI 仓库 ===
+repositories {
+    maven {
+        name = "Jared's Maven"
+        url = "https://maven.blamejared.com/"
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.4.13'
+    compileOnly fg.deobf("mezz.jei:jei-1.20.1-common-api:15.20.0.105")
+    compileOnly fg.deobf("mezz.jei:jei-1.20.1-forge-api:15.20.0.105")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.20.1-forge:15.20.0.105")
+}
+
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
+jar {
+    manifest {
+        attributes([
+                'Specification-Title'     : 'BlackCard',
+                'Specification-Vendor'    : 'YourName',
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.version,
+                'Implementation-Vendor'   : 'YourName'
+        ])
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

@@ -1,0 +1,10 @@
+{
+    "config.blackcard.enableCustomDisplayName": "Включить пользовательское имя",
+    "config.blackcard.general.enableCustomDisplayName.tooltip": "Включить пользовательское отображаемое имя для Чёрной Карты.\nЕсли включено: отображается как «[Предмет] ЧёрнаяКарта» (напр., «Алмаз ЧёрнаяКарта»).\nЕсли выключено: отображается просто как «Чёрная карта».",
+    "item.blackcard.black_card": "Чёрная карта",
+    "item.blackcard.black_card.amount.prefix": "Количество: ",
+    "item.blackcard.black_card.generates": "Создаётся: %s",
+    "item.blackcard.black_card.suffix": "ЧёрнаяКарта",
+    "pack.blackcard.description": "Мод Чёрной Карты — Изготавливайте любые предметы!",
+    "jei.blackcard.information.description": "Поместите эту Чёрную Карту отдельно в сетку крафта, чтобы создать предмет, указанный в её NBT-данных.\n\n\n§o§e(Управляется targetCount и targetItem)"
+}

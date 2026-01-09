@@ -1,0 +1,10 @@
+{
+    "config.blackcard.enableCustomDisplayName": "사용자 정의 이름 활성화",
+    "config.blackcard.general.enableCustomDisplayName.tooltip": "블랙 카드의 사용자 정의 표시 이름을 활성화합니다.\n활성화 시: '[아이템] 블랙카드'로 표시됩니다 (예: '다이아몬드 블랙카드').\n비활성화 시: '블랙 카드'만 표시됩니다.",
+    "item.blackcard.black_card": "블랙 카드",
+    "item.blackcard.black_card.amount.prefix": "수량: ",
+    "item.blackcard.black_card.generates": "합성: %s",
+    "item.blackcard.black_card.suffix": "블랙카드",
+    "pack.blackcard.description": "블랙 카드 모드 - 아이템을 합성하세요!",
+    "jei.blackcard.information.description": "이 블랙 카드를 합성창에 단독으로 넣으면 NBT에 지정된 아이템을 합성합니다.\n\n\n§o§e(targetCount와 targetItem에 의해 제어됨)"
+}

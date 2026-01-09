@@ -1,0 +1,10 @@
+{
+    "config.blackcard.enableCustomDisplayName": "Ativar nome personalizado",
+    "config.blackcard.general.enableCustomDisplayName.tooltip": "Ativa o nome de exibição personalizado para o Cartão Preto.\nQuando ativado: mostra como '[Item] CartãoPreto' (ex: 'Diamante CartãoPreto').\nQuando desativado: mostra apenas 'Cartão Preto'.",
+    "item.blackcard.black_card": "Cartão Preto",
+    "item.blackcard.black_card.amount.prefix": "Quantidade: ",
+    "item.blackcard.black_card.generates": "Produz: %s",
+    "item.blackcard.black_card.suffix": "CartãoPreto",
+    "pack.blackcard.description": "Mod do Cartão Preto – Crie qualquer item!",
+    "jei.blackcard.information.description": "Coloque este Cartão Preto sozinho na grelha de criação para criar o item especificado nos seus dados NBT.\n\n\n§o§e(Controlado por targetCount e targetItem)"
+}

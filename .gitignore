@@ -1,0 +1,16 @@
+# Gradle
+.gradle
+build
+out
+
+# IDE
+.idea
+.iml
+.iws
+
+# Minecraft run dir
+run
+
+# Logs
+logs
+crash-reports

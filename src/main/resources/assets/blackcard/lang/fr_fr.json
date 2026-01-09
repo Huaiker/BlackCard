@@ -1,0 +1,10 @@
+{
+    "config.blackcard.enableCustomDisplayName": "Activer le nom personnalisé",
+    "config.blackcard.general.enableCustomDisplayName.tooltip": "Active le nom d'affichage personnalisé pour la Carte Noire.\nActivé : affiche sous la forme « [Objet] CarteNoire » (ex. : « Diamant CarteNoire »).\nDésactivé : affiche simplement « Carte Noire ».",
+    "item.blackcard.black_card": "Carte Noire",
+    "item.blackcard.black_card.amount.prefix": "Quantité : ",
+    "item.blackcard.black_card.generates": "Fabrique : %s",
+    "item.blackcard.black_card.suffix": "CarteNoire",
+    "pack.blackcard.description": "Mod Carte Noire – Fabriquez n’importe quel objet !",
+    "jei.blackcard.information.description": "Placez cette Carte Noire seule dans la grille d’artisanat pour fabriquer l’objet spécifié dans ses données NBT.\n\n\n§o§e(Contrôlé par targetCount et targetItem)"
+}

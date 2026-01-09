@@ -1,0 +1,10 @@
+{
+    "config.blackcard.enableCustomDisplayName": "Benutzerdefinierten Namen aktivieren",
+    "config.blackcard.general.enableCustomDisplayName.tooltip": "Aktiviert den benutzerdefinierten Anzeigenamen für die Schwarze Karte.\nAktiviert: Zeigt als „[Gegenstand] SchwarzeKarte“ an (z. B. „Diamant SchwarzeKarte“).\nDeaktiviert: Zeigt nur „Schwarze Karte“ an.",
+    "item.blackcard.black_card": "Schwarze Karte",
+    "item.blackcard.black_card.amount.prefix": "Menge: ",
+    "item.blackcard.black_card.generates": "Erstellt: %s",
+    "item.blackcard.black_card.suffix": "SchwarzeKarte",
+    "pack.blackcard.description": "Schwarze-Karte-Mod – Stelle jeden Gegenstand her!",
+    "jei.blackcard.information.description": "Lege diese Schwarze Karte allein in das Werkbankraster, um den in ihren NBT-Daten angegebenen Gegenstand herzustellen.\n\n\n§o§e(Gesteuert durch targetCount und targetItem)"
+}

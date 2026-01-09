@@ -1,0 +1,10 @@
+{
+    "config.blackcard.enableCustomDisplayName": "Habilitar nombre personalizado",
+    "config.blackcard.general.enableCustomDisplayName.tooltip": "Habilita el nombre de visualización personalizado para la Tarjeta Negra.\nActivado: muestra como «[Objeto] TarjetaNegra» (ej.: «Diamante TarjetaNegra»).\nDesactivado: muestra solo «Tarjeta Negra».",
+    "item.blackcard.black_card": "Tarjeta Negra",
+    "item.blackcard.black_card.amount.prefix": "Cantidad: ",
+    "item.blackcard.black_card.generates": "Crea: %s",
+    "item.blackcard.black_card.suffix": "TarjetaNegra",
+    "pack.blackcard.description": "¡Mod de Tarjeta Negra – ¡Crea cualquier objeto!",
+    "jei.blackcard.information.description": "Coloca esta Tarjeta Negra sola en la cuadrícula de elaboración para crear el objeto especificado en sus datos NBT.\n\n\n§o§e(Controlado por targetCount y targetItem)"
+}

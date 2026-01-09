@@ -1,0 +1,10 @@
+{
+    "config.blackcard.enableCustomDisplayName": "Enable custom display name for BlackCard",
+    "config.blackcard.general.enableCustomDisplayName.tooltip": "Enable custom display name for BlackCard.\nWhen enabled: shows as '[Item] BlackCard' (e.g., 'Diamond BlackCard').\nWhen disabled: shows simply as 'BlackCard'.",
+    "item.blackcard.black_card": "Black Card",
+    "item.blackcard.black_card.amount.prefix": "Amount: ",
+    "item.blackcard.black_card.generates": "Crafts: %s",
+    "item.blackcard.black_card.suffix": "BlackCard",
+    "pack.blackcard.description": "Black Card Mod - Craft any item!",
+    "jei.blackcard.information.description": "Place this Black Card alone in a crafting grid to craft the item specified in its NBT data.\n\n\n§o§e(Controlled by targetCount and targetItem)"
+}

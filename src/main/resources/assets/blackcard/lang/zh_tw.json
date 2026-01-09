@@ -1,0 +1,10 @@
+{
+    "config.blackcard.enableCustomDisplayName": "啟用黑卡自訂顯示名稱",
+    "config.blackcard.general.enableCustomDisplayName.tooltip": "啟用黑卡的自訂顯示名稱。\n開啟時：顯示為「[物品] 黑卡」（例如：「鑽石 黑卡」）。\n關閉時：僅顯示為「黑卡」。",
+    "item.blackcard.black_card": "黑卡",
+    "item.blackcard.black_card.amount.prefix": "數量：",
+    "item.blackcard.black_card.generates": "合成：%s",
+    "item.blackcard.black_card.suffix": "黑卡",
+    "pack.blackcard.description": "黑卡模組 - 合成任意物品！",
+    "jei.blackcard.information.description": "將此黑卡單獨放入合成欄，即可合成其 NBT 中指定的物品。\n\n\n§o§e（受targetCount與targetItem控制）"
+}

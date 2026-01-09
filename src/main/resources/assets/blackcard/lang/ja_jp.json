@@ -1,0 +1,10 @@
+{
+    "config.blackcard.enableCustomDisplayName": "カスタム表示名を有効化",
+    "config.blackcard.general.enableCustomDisplayName.tooltip": "ブラックカードのカスタム表示名を有効化します。\n有効時：「[アイテム] ブラックカード」と表示（例：「ダイヤモンド ブラックカード」）。\n無効時：単に「ブラックカード」と表示。",
+    "item.blackcard.black_card": "ブラックカード",
+    "item.blackcard.black_card.amount.prefix": "数量: ",
+    "item.blackcard.black_card.generates": "クラフト: %s",
+    "item.blackcard.black_card.suffix": "ブラックカード",
+    "pack.blackcard.description": "ブラックカードMOD - 任意のアイテムをクラフト！",
+    "jei.blackcard.information.description": "このブラックカードをクラフト枠に単体で置くと、そのNBTに指定されたアイテムをクラフトします。\n\n\n§o§e(targetCountおよびtargetItemで制御)"
+}
