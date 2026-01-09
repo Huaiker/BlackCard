@@ -1,5 +1,6 @@
 # BlackCard
 <<<<<<< HEAD
+> 🌐 [中文版](README_zh.md)
 
 [![Minecraft 1.20.1](https://img.shields.io/badge/Minecraft-1.20.1-green?logo=minecraft)](https://www.minecraft.net/)
 [![Forge 47.4.13+](https://img.shields.io/badge/Forge-47.4.13%2B-orange)](https://files.minecraftforge.net/)
@@ -16,11 +17,8 @@ The Black Card's behavior is controlled by two custom NBT tags:
 
 > ⚠️ If `targetCount` is less than 1 or exceeds the item's max stack size, the Black Card will not function.
 ---
-> 🔑 **Features**
-> - Unique collectible item: the **Black Card**
 > - Lightweight, no performance impact
 > - Forge 1.20.1 compatible
-
 ---
 
 ## 🌍 Localization (13 Languages)
