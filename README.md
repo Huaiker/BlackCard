@@ -1,6 +1,6 @@
 # BlackCard
 <<<<<<< HEAD
-> 🌐 :[中文版](README_zh.md)
+> 🌐 : [中文版](README_zh.md)
 
 [![Minecraft 1.20.1](https://img.shields.io/badge/Minecraft-1.20.1-green?logo=minecraft)](https://www.minecraft.net/)
 [![Forge 47.4.13+](https://img.shields.io/badge/Forge-47.4.13%2B-orange)](https://files.minecraftforge.net/)
