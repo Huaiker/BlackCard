@@ -1,6 +1,6 @@
 # BlackCard
 <<<<<<< HEAD
-> 🌐 **阅读其他语言版本**: [English](README.md)
+> 🌐 : [English](README.md)
 
 [![Minecraft 1.20.1](https://img.shields.io/badge/Minecraft-1.20.1-green?logo=minecraft)](https://www.minecraft.net/)
 [![Forge 47.4.13+](https://img.shields.io/badge/Forge-47.4.13%2B-orange)](https://files.minecraftforge.net/)
