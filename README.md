@@ -83,7 +83,4 @@ If you want to modify the code or build the mod yourself:
 
 7. Launch Minecraft with Forge — your custom build will be loaded!
 
-> 💡 Tip: The first build may take several minutes as it downloads Minecraft and Forge files.
-=======
-A Fucking shit Minecraft mod made by AI,Add a ITEM to do sth
->>>>>>> 98054762c69752676535be3db995ca0c95ceb063
+---
