@@ -7,7 +7,15 @@
 ![Languages](https://img.shields.io/badge/Languages-13-brightgreen)
 
 A Fucking shit mod made by AI,ADD ITEM to do sth
+## Black Card Item Configuration
 
+The Black Card's behavior is controlled by two custom NBT tags:
+
+- `targetItem`: The namespaced ID of the target item (e.g., `"minecraft:diamond"`).
+- `targetCount`: The number of items to consume. **Must be an integer between 1 and the target item's max stack size (inclusive).**
+
+> ⚠️ If `targetCount` is less than 1 or exceeds the item's max stack size, the Black Card will not function.
+---
 > 🔑 **Features**
 > - Unique collectible item: the **Black Card**
 > - Lightweight, no performance impact
