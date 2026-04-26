@@ -2,6 +2,7 @@ package blackcard.blackcard;
 
 import blackcard.blackcard.config.BlackCardConfig;
 import blackcard.blackcard.init.ItemInit;
+import blackcard.blackcard.network.NetworkHandler;
 import blackcard.blackcard.recipe.UniversalNBTRecipe;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -19,14 +20,22 @@ public class BlackCard {
         // 注册配置
         BlackCardConfig.register();
 
+        // 注册物品和配方序列化器
         ItemInit.ITEMS.register(modEventBus);
         UniversalNBTRecipe.RECIPE_SERIALIZERS.register(modEventBus);
+
+        // 注册网络通信
+        NetworkHandler.register();
+
+        // 添加物品到创造模式标签页
         modEventBus.addListener(this::addItemsToTabs);
     }
 
     private void addItemsToTabs(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(ItemInit.BLACK_CARD);
+            event.accept(ItemInit.TAG_BLACK_CARD);
+            event.accept(ItemInit.MOD_BLACK_CARD);
         }
     }
 }

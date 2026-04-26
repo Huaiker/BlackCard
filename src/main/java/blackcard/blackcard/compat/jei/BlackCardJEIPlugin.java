@@ -19,16 +19,28 @@ public class BlackCardJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        ItemStack stack = ItemInit.BLACK_CARD.get().getDefaultInstance();
-
-        // ✅ 传入 Component...（可变参数），不要用 List.of()
+        // 单物品黑卡
+        ItemStack blackCardStack = ItemInit.BLACK_CARD.get().getDefaultInstance();
         registration.addIngredientInfo(
-                stack,
+                blackCardStack,
                 VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.blackcard.information.description")
-                // 可以加多行：
-                // Component.literal("Second line"),
-                // Component.literal("Third line")
+        );
+
+        // 标签型黑卡
+        ItemStack tagBlackCardStack = ItemInit.TAG_BLACK_CARD.get().getDefaultInstance();
+        registration.addIngredientInfo(
+                tagBlackCardStack,
+                VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.blackcard.tag_black_card.information.description")
+        );
+
+        // 模组型黑卡
+        ItemStack modBlackCardStack = ItemInit.MOD_BLACK_CARD.get().getDefaultInstance();
+        registration.addIngredientInfo(
+                modBlackCardStack,
+                VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.blackcard.mod_black_card.information.description")
         );
     }
 }

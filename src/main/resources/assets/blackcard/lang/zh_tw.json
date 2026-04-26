@@ -5,6 +5,16 @@
     "item.blackcard.black_card.amount.prefix": "數量：",
     "item.blackcard.black_card.generates": "合成：%s",
     "item.blackcard.black_card.suffix": "黑卡",
+    "item.blackcard.tag_black_card": "標籤黑卡",
+    "item.blackcard.tag_black_card.suffix": "標籤黑卡",
+    "item.blackcard.mod_black_card": "模組黑卡",
+    "item.blackcard.mod_black_card.amount.prefix": "數量：",
+    "item.blackcard.mod_black_card.generates": "合成：%s",
+    "item.blackcard.mod_black_card.mod": "模組：%s",
+    "item.blackcard.mod_black_card.cycle_hint": "Shift + 滾輪切換物品",
+    "item.blackcard.mod_black_card.suffix": "模組黑卡",
     "pack.blackcard.description": "黑卡模組 - 合成任意物品！",
-    "jei.blackcard.information.description": "將此黑卡單獨放入合成欄，即可合成其 NBT 中指定的物品。\n\n\n§o§e（受targetCount與targetItem控制）"
+    "jei.blackcard.information.description": "將此黑卡單獨放入合成欄，即可合成其 NBT 中指定的物品。\n\n\n§o§e（受targetCount與targetItem控制）",
+    "jei.blackcard.tag_black_card.information.description": "基於標籤的黑卡，可合成該標籤下所有物品。\n\n\n§o§e（受targetTag控制）",
+    "jei.blackcard.mod_black_card.information.description": "基於模組的黑卡，可合成該模組下所有物品。\n\n\n§o§e（受targetMod控制）"
 }

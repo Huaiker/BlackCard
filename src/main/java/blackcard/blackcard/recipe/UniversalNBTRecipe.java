@@ -18,6 +18,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import blackcard.blackcard.BlackCard;
+import blackcard.blackcard.init.ItemInit;
+import blackcard.blackcard.item.ModBlackCard;
+import blackcard.blackcard.item.TagBlackCard;
 
 public class UniversalNBTRecipe extends CustomRecipe {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =
@@ -39,7 +42,6 @@ public class UniversalNBTRecipe extends CustomRecipe {
                 public void toNetwork(FriendlyByteBuf buf, UniversalNBTRecipe recipe) {}
             });
 
-    // ✅ 使用小驼峰命名（camelCase）
     private static final String NBT_TARGET_ITEM = "targetItem";
     private static final String NBT_TARGET_COUNT = "targetCount";
 
@@ -66,9 +68,19 @@ public class UniversalNBTRecipe extends CustomRecipe {
             }
         }
 
-        return !nbtItem.isEmpty()
-                && totalItems == 1
-                && isValidNBTItem(nbtItem);
+        if (nbtItem.isEmpty() || totalItems != 1) return false;
+
+        // 标签黑卡：确保targetItem已同步
+        if (nbtItem.getItem() == ItemInit.TAG_BLACK_CARD.get()) {
+            TagBlackCard.ensureTargetItemSynced(nbtItem);
+        }
+
+        // 模组黑卡：确保targetItem已同步
+        if (nbtItem.getItem() == ItemInit.MOD_BLACK_CARD.get()) {
+            ModBlackCard.ensureTargetItemSynced(nbtItem);
+        }
+
+        return isValidNBTItem(nbtItem);
     }
 
     private boolean isValidNBTItem(ItemStack stack) {
@@ -76,7 +88,6 @@ public class UniversalNBTRecipe extends CustomRecipe {
         var tag = stack.getTag();
         if (tag == null) return false;
 
-        // ✅ 严格检查小驼峰键名
         return tag.contains(NBT_TARGET_ITEM, net.minecraft.nbt.Tag.TAG_STRING)
                 && tag.contains(NBT_TARGET_COUNT, net.minecraft.nbt.Tag.TAG_INT);
     }
@@ -98,8 +109,8 @@ public class UniversalNBTRecipe extends CustomRecipe {
         }
 
         var tag = nbtItem.getTag();
-        String targetItemId = tag.getString(NBT_TARGET_ITEM); // "targetItem"
-        int targetCount = tag.getInt(NBT_TARGET_COUNT);       // "targetCount"
+        String targetItemId = tag.getString(NBT_TARGET_ITEM);
+        int targetCount = tag.getInt(NBT_TARGET_COUNT);
 
         ResourceLocation itemId = ResourceLocation.tryParse(targetItemId);
         if (itemId == null) return ItemStack.EMPTY;
