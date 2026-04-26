@@ -41,7 +41,7 @@
 |------|------|------|
 | `targetTag` | 字符串 (TAG_STRING) | 标签的命名空间 ID，例如 `"minecraft:logs"` |
 | `targetItem` | 字符串 (TAG_STRING) | 自动同步 — 当前选中的标签内物品 |
-| `targetCount` | 整数 (TAG_INT) | 合成的物品数量。必须在 1 到物品最大堆叠数之间 |
+| `targetCount` | 整数 (TAG_INT) | 合成的物品数量。必须在 1 及以上 |
 | `currentItemIndex` | 整数 (TAG_INT) | 当前在标签内的选中索引（从 0 开始）。通过 Shift+滚轮切换 |
 
 > `targetItem` 会根据 `targetTag` 和 `currentItemIndex` 自动同步。手动只需设置 `targetTag` 和 `targetCount`。
@@ -63,7 +63,7 @@
 |------|------|------|
 | `targetMod` | 字符串 (TAG_STRING) | 模组 ID（命名空间），例如 `"minecraft"`、`"blackcard"`、`"create"` |
 | `targetItem` | 字符串 (TAG_STRING) | 自动同步 — 当前选中的模组内物品 |
-| `targetCount` | 整数 (TAG_INT) | 合成的物品数量。必须在 1 到物品最大堆叠数之间 |
+| `targetCount` | 整数 (TAG_INT) | 合成的物品数量。必须在 1 及以上 |
 | `currentItemIndex` | 整数 (TAG_INT) | 当前在模组内的选中索引（从 0 开始）。通过 Shift+滚轮切换 |
 
 > `targetItem` 会根据 `targetMod` 和 `currentItemIndex` 自动同步。手动只需设置 `targetMod` 和 `targetCount`。
