@@ -4,7 +4,6 @@
 
 [![Minecraft 1.20.1](https://img.shields.io/badge/Minecraft-1.20.1-green?logo=minecraft)](https://www.minecraft.net/)
 [![Forge 47.4.13+](https://img.shields.io/badge/Forge-47.4.13%2B-orange)](https://files.minecraftforge.net/)
-[![JEI Compatible](https://img.shields.io/badge/JEI-Compatible-blue)](https://github.com/mezz/JustEnoughItems)
 ![Languages](https://img.shields.io/badge/Languages-13-brightgreen)
 
 A universal item voucher mod — Black Cards can craft any item! Supports three types: **Item Black Card**, **Tag Black Card**, and **Mod Black Card**.
@@ -22,7 +21,7 @@ Specifies a single exact item to craft. You set the target item ID and count dir
 | Field | Type | Description |
 |-------|------|-------------|
 | `targetItem` | String (TAG_STRING) | The namespaced ID of the target item, e.g. `"minecraft:diamond"` |
-| `targetCount` | Integer (TAG_INT) | The number of items to craft. Must be between 1 and the item's max stack size |
+| `targetCount` | Integer (TAG_INT) | The number of items to craft. Must be at least 1 |
 
 **Example Command — Give an Item Black Card for 32 Diamonds:**
 ```
@@ -41,7 +40,7 @@ Crafts any item that belongs to a specified tag. Use **Shift + Scroll Wheel** to
 |-------|------|-------------|
 | `targetTag` | String (TAG_STRING) | The namespaced tag ID, e.g. `"minecraft:logs"` |
 | `targetItem` | String (TAG_STRING) | Auto-synced — the currently selected item from the tag |
-| `targetCount` | Integer (TAG_INT) | The number of items to craft. Must be between 1 and the item's max stack size |
+| `targetCount` | Integer (TAG_INT) | The number of items to craft. Must be at least 1 |
 | `currentItemIndex` | Integer (TAG_INT) | The current selection index within the tag (0-based). Changed via Shift+Scroll |
 
 > `targetItem` is automatically synchronized from `targetTag` and `currentItemIndex`. You only need to set `targetTag` and `targetCount` manually.
@@ -63,7 +62,7 @@ Crafts any item that belongs to a specified mod (by modid). Use **Shift + Scroll
 |-------|------|-------------|
 | `targetMod` | String (TAG_STRING) | The mod ID (namespace), e.g. `"minecraft"`, `"blackcard"`, `"create"` |
 | `targetItem` | String (TAG_STRING) | Auto-synced — the currently selected item from the mod |
-| `targetCount` | Integer (TAG_INT) | The number of items to craft. Must be between 1 and the item's max stack size |
+| `targetCount` | Integer (TAG_INT) | The number of items to craft. Must be at least 1 |
 | `currentItemIndex` | Integer (TAG_INT) | The current selection index within the mod (0-based). Changed via Shift+Scroll |
 
 > `targetItem` is automatically synchronized from `targetMod` and `currentItemIndex`. You only need to set `targetMod` and `targetCount` manually.
@@ -85,7 +84,7 @@ Crafts any item that belongs to a specified mod (by modid). Use **Shift + Scroll
 | `targetMod` | Mod only | ✅ | ❌ | The mod ID to select items from |
 | `currentItemIndex` | Tag / Mod | ❌ (default 0) | ❌ | Current selection index (0-based) |
 
-> ⚠️ If `targetCount` is less than 1 or exceeds the item's max stack size, the Black Card will not function.
+> ⚠️ If `targetCount` is less than 1 , the Black Card will not function.
 
 ---
 
