@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Specification-Title: BlackCard
-Specification-Vendor: YourName
-Specification-Version: 1
-Implementation-Title: blackcard
-Implementation-Version: 1.1.0
-Implementation-Vendor: YourName
-
