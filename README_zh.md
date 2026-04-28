@@ -1,13 +1,12 @@
-# BlackCard
-
-> 🌐 : [English](README.md)
+# BlackCard - Minecraft 1.20.1 Forge
 
 [![Minecraft 1.20.1](https://img.shields.io/badge/Minecraft-1.20.1-green?logo=minecraft)](https://www.minecraft.net/)
 [![Forge 47.4.13+](https://img.shields.io/badge/Forge-47.4.13%2B-orange)](https://files.minecraftforge.net/)
-[![JEI Compatible](https://img.shields.io/badge/JEI-Compatible-blue)](https://github.com/mezz/JustEnoughItems)
-![Languages](https://img.shields.io/badge/Languages-13-brightgreen)
+[![Version 2.0.0](https://img.shields.io/badge/Version-2.0.0-blue)]()
 
-一个通用物品凭证模组 —— 黑卡可以合成任意物品！支持三种类型：**单物品黑卡**、**标签黑卡** 和 **模组黑卡**。
+通用物品凭证模组 —— 黑卡可以合成任意物品！支持多物品绑定、黑名单过滤、Cell⁴ 联动。
+
+[English](README.md)
 
 ---
 
@@ -15,148 +14,152 @@
 
 ### 1. 单物品黑卡 (`black_card`)
 
-指定一个确切的物品进行合成。直接设置目标物品ID和数量。
+绑定一个或多个具体物品，合成时产出第一个非黑名单物品。
 
-**NBT 字段：**
+```mcfunction
+# 单个物品
+/give @p blackcard:black_card{bcitem:"minecraft:diamond",targetCount:1}
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| `targetItem` | 字符串 (TAG_STRING) | 目标物品的命名空间 ID，例如 `"minecraft:diamond"` |
-| `targetCount` | 整数 (TAG_INT) | 合成的物品数量。必须在 1 及以上|
+# 多个物品（列表格式，与 Cell⁴ 对齐）
+/give @p blackcard:black_card{bcitem:["minecraft:diamond","minecraft:iron_ingot"],targetCount:1}
 
-**指令示例 — 获取一张合成 32 个钻石的单物品黑卡：**
+# 带黑名单
+/give @p blackcard:black_card{bcitem:"minecraft:diamond",targetCount:1,bcblacklist:["minecraft:bedrock"]}
 ```
-/give @p blackcard:black_card{targetItem:"minecraft:diamond",targetCount:32}
-```
-
----
 
 ### 2. 标签黑卡 (`tag_black_card`)
 
-可以合成指定标签（Tag）下的任意物品。使用 **Shift + 滚轮** 切换标签内的物品。
+绑定一个或多个物品标签，**Shift + 滚轮** 切换标签内物品。
 
-**NBT 字段：**
+```mcfunction
+# 单个标签
+/give @p blackcard:tag_black_card{bctag:"minecraft:logs",targetCount:1}
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| `targetTag` | 字符串 (TAG_STRING) | 标签的命名空间 ID，例如 `"minecraft:logs"` |
-| `targetItem` | 字符串 (TAG_STRING) | 自动同步 — 当前选中的标签内物品 |
-| `targetCount` | 整数 (TAG_INT) | 合成的物品数量。必须在 1 及以上 |
-| `currentItemIndex` | 整数 (TAG_INT) | 当前在标签内的选中索引（从 0 开始）。通过 Shift+滚轮切换 |
+# 多个标签
+/give @p blackcard:tag_black_card{bctag:["minecraft:logs","forge:ingots/iron"],targetCount:1}
 
-> `targetItem` 会根据 `targetTag` 和 `currentItemIndex` 自动同步。手动只需设置 `targetTag` 和 `targetCount`。
-
-**指令示例 — 获取一张合成 `minecraft:logs` 标签物品的标签黑卡（64个）：**
+# 带黑名单
+/give @p blackcard:tag_black_card{bctag:"minecraft:logs",targetCount:1,bcblacklist:"minecraft:crimson_stem"}
 ```
-/give @p blackcard:tag_black_card{targetTag:"minecraft:logs",targetCount:64,currentItemIndex:0}
-```
-
----
 
 ### 3. 模组黑卡 (`mod_black_card`)
 
-可以合成指定模组（通过 modid）下的任意物品。使用 **Shift + 滚轮** 切换模组内的物品。
+绑定一个或多个模组ID，**Shift + 滚轮** 切换模组内物品。
 
-**NBT 字段：**
+```mcfunction
+# 单个模组
+/give @p blackcard:mod_black_card{bcmodid:"mekanism",targetCount:1}
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| `targetMod` | 字符串 (TAG_STRING) | 模组 ID（命名空间），例如 `"minecraft"`、`"blackcard"`、`"create"` |
-| `targetItem` | 字符串 (TAG_STRING) | 自动同步 — 当前选中的模组内物品 |
-| `targetCount` | 整数 (TAG_INT) | 合成的物品数量。必须在 1 及以上 |
-| `currentItemIndex` | 整数 (TAG_INT) | 当前在模组内的选中索引（从 0 开始）。通过 Shift+滚轮切换 |
+# 多个模组
+/give @p blackcard:mod_black_card{bcmodid:["mekanism","thermal"],targetCount:1}
 
-> `targetItem` 会根据 `targetMod` 和 `currentItemIndex` 自动同步。手动只需设置 `targetMod` 和 `targetCount`。
-
-**指令示例 — 获取一张合成 `create` 模组物品的模组黑卡（1个）：**
-```
-/give @p blackcard:mod_black_card{targetMod:"create",targetCount:1,currentItemIndex:0}
+# 带黑名单
+/give @p blackcard:mod_black_card{bcmodid:"mekanism",targetCount:1,bcblacklist:["mekanism:creative_bin"]}
 ```
 
 ---
 
-## 📋 NBT 字段总览
+## 📋 NBT 键对照表
 
-| 字段 | 适用黑卡 | 是否必填 | 是否自动同步 | 说明 |
-|------|---------|---------|-------------|------|
-| `targetItem` | 单物品 / 标签 / 模组 | 单物品：✅ 标签/模组：❌ | 标签/模组：✅ | 要合成的物品命名空间 ID |
-| `targetCount` | 单物品 / 标签 / 模组 | ✅ | ❌ | 合成数量（1 ~ 物品最大堆叠数） |
-| `targetTag` | 仅标签黑卡 | ✅ | ❌ | 物品标签 ID |
-| `targetMod` | 仅模组黑卡 | ✅ | ❌ | 模组 ID |
-| `currentItemIndex` | 标签 / 模组 | ❌（默认 0） | ❌ | 当前选中索引（从 0 开始） |
+| 新键（v2.0） | 旧键（兼容） | 说明 | Cell⁴ 对应键 |
+|:---:|:---:|:---|:---:|
+| `bcitem` | `targetItem` | 物品ID（字符串或列表） | `cell4item` |
+| `bctag` | `targetTag` | 标签ID（字符串或列表） | `cell4tag` |
+| `bcmodid` | `targetMod` | 模组ID（字符串或列表） | `cell4modid` |
+| `bcblacklist` | — | 黑名单物品ID（字符串或列表） | `cell4blacklist` |
+| `targetCount` | `targetCount` | 合成输出数量（整数，默认1） | — |
+| `currentItemIndex` | `currentItemIndex` | 当前循环索引（标签/模组黑卡） | — |
+| `targetItem` | `targetItem` | 当前选中的物品ID（自动同步） | — |
 
-> ⚠️ 如果 `targetCount` 小于 1 黑卡将无法工作。
+> 所有标识符键支持**单字符串**和**字符串列表**两种格式，与 Cell⁴ 的 NBT 格式完全一致。旧版键自动兼容。
+
+---
+
+## 🚫 黑名单
+
+所有黑卡支持 `bcblacklist` 键排除特定物品：
+
+- 合成时**跳过**黑名单物品
+- 标签/模组黑卡**循环时跳过**黑名单物品
+- Tooltip 中以红色标记显示
+
+```mcfunction
+# 单个黑名单物品
+/give @p blackcard:black_card{bcitem:"minecraft:diamond",bcblacklist:"minecraft:bedrock"}
+
+# 多个黑名单物品
+/give @p blackcard:mod_black_card{bcmodid:"mekanism",bcblacklist:["mekanism:creative_bin","mekanism:creative_energy_cube"]}
+```
+
+---
+
+## 🔗 Cell⁴ 联动
+
+### 合成配方
+
+黑卡 + AE2 物品元件外壳（`ae2:item_cell_housing`） → Cell⁴ 无限元件
+
+| 输入 | + | → 输出 |
+|:---|:---:|:---|
+| Black Card | AE2 Cell Housing | Cell⁴ Infinity Item Cell |
+| Tag Black Card | AE2 Cell Housing | Cell⁴ Infinity Tag Cell |
+| Mod Black Card | AE2 Cell Housing | Cell⁴ Infinity ModID Cell |
+
+### NBT 自动转换
+
+合成时黑卡的 NBT 自动转为 Cell⁴ 格式：
+
+| BlackCard | Cell⁴ | 说明 |
+|:---:|:---:|:---|
+| `bcitem` | `cell4item` | 物品标识符 |
+| `bctag` | `cell4tag` | 标签标识符 |
+| `bcmodid` | `cell4modid` | 模组ID标识符 |
+| `bcblacklist` | `cell4blacklist` | 黑名单 |
+| `targetCount` | 丢弃 | Cell⁴ 无限元件无需数量 |
+
+### 前置模组
+
+- **AE2** v15.0.0+ — 提供 `item_cell_housing`
+- **Cell⁴** v1.0.0+ — 提供无限元件
 
 ---
 
 ## 🔧 使用方法
 
-1. **将**黑卡单独放入任意合成栏
-2. 配方系统读取 NBT 数据并输出指定物品
-3. 黑卡本身**不会被消耗** —— 它是可重复使用的凭证
-4. 标签黑卡和模组黑卡持卡时使用 **Shift + 滚轮** 可切换可用物品
+1. **合成**：将黑卡单独放入合成栏，即可产出指定物品（黑卡不消耗）
+2. **切换**：手持标签/模组黑卡时，**Shift + 滚轮** 切换物品
+3. **联动**：黑卡 + AE2 元件外壳 → Cell⁴ 无限元件
 
 ---
 
-## 🌍 本地化（13 种语言）
+## 📦 依赖
 
-✅ 完全支持以下语言：
-
-| 语言 | 代码 |
-|------|------|
-| English | `en_us` |
-| 简体中文 | `zh_cn` |
-| 繁體中文 (台灣) | `zh_tw` |
-| 繁體中文 (香港) | `zh_hk` |
-| 日本語 | `ja_jp` |
-| 한국어 | `ko_kr` |
-| Español | `es_es` |
-| Português (Brasil) | `pt_br` |
-| Português (Portugal) | `pt_pt` |
-| Русский | `ru_ru` |
-| Deutsch | `de_de` |
-| Français | `fr_fr` |
-| Italiano | `it_it` |
-
-> 💬 **想添加更多？** 欢迎贡献！
+| 模组 | 必需 | 版本 |
+|:---:|:---:|:---|
+| Minecraft | ✅ | 1.20.1 |
+| Forge | ✅ | 47.4.13+ |
+| JEI | ❌ | 15+ |
+| AE2 | ❌ | 15.0.0–16.0.0 |
+| Cell⁴ | ❌ | 1.0.0+ |
 
 ---
 
-## 📦 安装
+## 🌍 语言
 
-### 选项 1：下载预构建版本（推荐）
-
-1. 安装 [Minecraft Forge 1.20.1（版本 47.4.13 或更新）](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.20.1.html)
-2. 前往 [Releases 页面](https://github.com/yourname/blackcard/releases)
-3. 下载最新的文件，名称类似 `blackcard-1.x.x.jar`
-4. 将其放入你的 Minecraft `mods` 文件夹：
-   - **Windows**: `%appdata%\.minecraft\mods\`
-   - **macOS**: `~/Library/Application Support/minecraft/mods/`
-   - **Linux**: `~/.minecraft/mods/`
-5. 使用 Forge 配置文件启动 Minecraft
-
----
-
-### 选项 2：从源码构建
-
-1. **安装 Java 17** — 从 [Adoptium](https://adoptium.net/) 下载
-2. **下载源代码** — 从 GitHub 克隆或下载 ZIP
-3. **构建** — 运行 `./gradlew build`（macOS/Linux）或 `gradlew.bat`（Windows）
-4. **找到 jar 文件** — 位于 `build/libs/blackcard-1.x.x.jar`
-5. **复制到 `mods` 文件夹** 并使用 Forge 启动
+English · 简体中文 · 日本語 · 한국어
 
 ---
 
 ## ⚙️ 配置
 
 | 配置项 | 默认值 | 说明 |
-|-------|--------|------|
-| `enableCustomDisplayName` | `true` | 开启时，黑卡名称显示为「[物品] 黑卡」（例如「钻石 黑卡」）；关闭时仅显示「黑卡」 |
+|:---|:---:|:---|
+| `enableCustomDisplayName` | `true` | 开启：显示「[物品] 黑卡」；关闭：仅显示「黑卡」 |
 
-配置文件位置：`config/blackcard-common.toml`
+配置文件：`config/blackcard-common.toml`
 
 ---
 
 ## 📄 许可证
 
-本项目基于 MIT 许可证发布。
+MIT

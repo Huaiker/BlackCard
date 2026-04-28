@@ -21,6 +21,9 @@ import blackcard.blackcard.BlackCard;
 import blackcard.blackcard.init.ItemInit;
 import blackcard.blackcard.item.ModBlackCard;
 import blackcard.blackcard.item.TagBlackCard;
+import blackcard.blackcard.util.BlackCardUtil;
+
+import java.util.List;
 
 public class UniversalNBTRecipe extends CustomRecipe {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =
@@ -42,9 +45,6 @@ public class UniversalNBTRecipe extends CustomRecipe {
                 public void toNetwork(FriendlyByteBuf buf, UniversalNBTRecipe recipe) {}
             });
 
-    private static final String NBT_TARGET_ITEM = "targetItem";
-    private static final String NBT_TARGET_COUNT = "targetCount";
-
     public UniversalNBTRecipe(ResourceLocation id, CraftingBookCategory category) {
         super(id, category);
     }
@@ -62,7 +62,7 @@ public class UniversalNBTRecipe extends CustomRecipe {
                     if (nbtItem.isEmpty()) {
                         nbtItem = stack;
                     } else {
-                        return false; // 多个带 NBT 的物品 → 不匹配
+                        return false; // Multiple items with NBT -> no match
                     }
                 }
             }
@@ -70,12 +70,12 @@ public class UniversalNBTRecipe extends CustomRecipe {
 
         if (nbtItem.isEmpty() || totalItems != 1) return false;
 
-        // 标签黑卡：确保targetItem已同步
+        // Tag black card: ensure targetItem is synced
         if (nbtItem.getItem() == ItemInit.TAG_BLACK_CARD.get()) {
             TagBlackCard.ensureTargetItemSynced(nbtItem);
         }
 
-        // 模组黑卡：确保targetItem已同步
+        // Mod black card: ensure targetItem is synced
         if (nbtItem.getItem() == ItemInit.MOD_BLACK_CARD.get()) {
             ModBlackCard.ensureTargetItemSynced(nbtItem);
         }
@@ -88,8 +88,12 @@ public class UniversalNBTRecipe extends CustomRecipe {
         var tag = stack.getTag();
         if (tag == null) return false;
 
-        return tag.contains(NBT_TARGET_ITEM, net.minecraft.nbt.Tag.TAG_STRING)
-                && tag.contains(NBT_TARGET_COUNT, net.minecraft.nbt.Tag.TAG_INT);
+        // Check for new format keys (bcitem, bctag, bcmodid)
+        if (tag.contains(BlackCardUtil.NBT_ITEM) || tag.contains("targetItem")) return true;
+        if (tag.contains(BlackCardUtil.NBT_TAG) || tag.contains("targetTag")) return true;
+        if (tag.contains(BlackCardUtil.NBT_MODID) || tag.contains("targetMod")) return true;
+
+        return false;
     }
 
     @Override
@@ -108,10 +112,62 @@ public class UniversalNBTRecipe extends CustomRecipe {
             return ItemStack.EMPTY;
         }
 
-        var tag = nbtItem.getTag();
-        String targetItemId = tag.getString(NBT_TARGET_ITEM);
-        int targetCount = tag.getInt(NBT_TARGET_COUNT);
+        // Determine which type of black card this is
+        if (nbtItem.getItem() == ItemInit.BLACK_CARD.get()) {
+            // Single item black card: resolve from bcitem list
+            return resolveFromItemList(nbtItem);
+        } else if (nbtItem.getItem() == ItemInit.TAG_BLACK_CARD.get() ||
+                   nbtItem.getItem() == ItemInit.MOD_BLACK_CARD.get()) {
+            // Tag/Mod black card: resolve from targetItem (already synced)
+            return resolveFromTargetItem(nbtItem);
+        }
 
+        // Fallback: try old format
+        return resolveFromTargetItem(nbtItem);
+    }
+
+    /**
+     * Resolve output from a single-item black card using the bcitem list.
+     * Skips blacklisted items.
+     */
+    private ItemStack resolveFromItemList(ItemStack cardStack) {
+        List<String> itemIds = BlackCardUtil.getItemIdentifiers(cardStack);
+        int count = BlackCardUtil.getTargetCount(cardStack);
+
+        for (String id : itemIds) {
+            // Skip blacklisted items
+            if (BlackCardUtil.isBlacklisted(cardStack, id)) continue;
+
+            ResourceLocation rl = ResourceLocation.tryParse(id);
+            if (rl == null) continue;
+
+            Item targetItem = BuiltInRegistries.ITEM.get(rl);
+            if (targetItem == null || targetItem == Items.AIR) continue;
+
+            int maxStackSize = targetItem.getMaxStackSize();
+            int actualCount = Math.min(Math.max(1, count), maxStackSize);
+            return new ItemStack(targetItem, actualCount);
+        }
+
+        return ItemStack.EMPTY;
+    }
+
+    /**
+     * Resolve output from targetItem string (used by tag/mod cards).
+     * Checks blacklist before producing output.
+     */
+    private ItemStack resolveFromTargetItem(ItemStack cardStack) {
+        var tag = cardStack.getTag();
+        if (tag == null || !tag.contains("targetItem", 8)) return ItemStack.EMPTY;
+
+        String targetItemId = tag.getString("targetItem");
+
+        // Check blacklist
+        if (BlackCardUtil.isBlacklisted(cardStack, targetItemId)) {
+            return ItemStack.EMPTY;
+        }
+
+        int targetCount = BlackCardUtil.getTargetCount(cardStack);
         ResourceLocation itemId = ResourceLocation.tryParse(targetItemId);
         if (itemId == null) return ItemStack.EMPTY;
 
@@ -131,7 +187,7 @@ public class UniversalNBTRecipe extends CustomRecipe {
         for (int i = 0; i < container.getContainerSize(); i++) {
             ItemStack stack = container.getItem(i);
             if (!stack.isEmpty() && stack.hasTag() && isValidNBTItem(stack)) {
-                remaining.set(i, stack.copy()); // 不消耗原物品
+                remaining.set(i, stack.copy()); // Don't consume the card
                 break;
             }
         }

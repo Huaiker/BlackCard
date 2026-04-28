@@ -1,24 +1,33 @@
 {
     "config.blackcard.enableCustomDisplayName": "Enable custom display name for BlackCard",
     "config.blackcard.general.enableCustomDisplayName.tooltip": "Enable custom display name for BlackCard.\nWhen enabled: shows as '[Item] BlackCard' (e.g., 'Diamond BlackCard').\nWhen disabled: shows simply as 'BlackCard'.",
+
     "item.blackcard.black_card": "Black Card",
     "item.blackcard.black_card.amount.prefix": "Amount: ",
     "item.blackcard.black_card.generates": "Crafts: %s",
     "item.blackcard.black_card.suffix": "BlackCard",
+    "item.blackcard.black_card_name_multi": "Black Card: %s items",
+
     "item.blackcard.tag_black_card": "Tag Black Card",
     "item.blackcard.tag_black_card.amount.prefix": "Amount: ",
     "item.blackcard.tag_black_card.generates": "Crafts: %s",
     "item.blackcard.tag_black_card.suffix": "TagBlackCard",
     "item.blackcard.tag_black_card.tag": "Tag: %s",
     "item.blackcard.tag_black_card.cycle_hint": "Shift + Scroll to cycle items",
+
     "item.blackcard.mod_black_card": "Mod Black Card",
     "item.blackcard.mod_black_card.amount.prefix": "Amount: ",
     "item.blackcard.mod_black_card.generates": "Crafts: %s",
     "item.blackcard.mod_black_card.suffix": "ModBlackCard",
     "item.blackcard.mod_black_card.mod": "Mod: %s",
     "item.blackcard.mod_black_card.cycle_hint": "Shift + Scroll to cycle items",
+
+    "tooltip.blackcard.item_count": "%s items bound",
+    "tooltip.blackcard.blacklist_item": "\u2716 %s",
+
     "pack.blackcard.description": "Black Card Mod - Craft any item!",
-    "jei.blackcard.information.description": "Place this Black Card alone in a crafting grid to craft the item specified in its NBT data.\n\n\n§o§e(Controlled by targetCount and targetItem)",
-    "jei.blackcard.tag_black_card.information.description": "A tag-based Black Card that can craft any item from a specified tag.\nUse §bShift + Scroll§r to cycle through items in the tag.\n\n§o§e(Controlled by targetTag, targetCount, and currentItemIndex)",
-    "jei.blackcard.mod_black_card.information.description": "A mod-based Black Card that can craft any item from a specified mod.\nUse §bShift + Scroll§r to cycle through items in the mod.\n\n§o§e(Controlled by targetMod, targetCount, and currentItemIndex)"
+
+    "jei.blackcard.information.description": "Place this Black Card alone in a crafting grid to craft the item specified in its NBT data.\n\nNBT Keys:\n- bcitem: Item ID string or list (e.g. \"minecraft:diamond\" or [\"minecraft:diamond\",\"minecraft:iron_ingot\"])\n- targetCount: Output count (integer, default 1)\n- bcblacklist: Blacklisted item IDs (string or list)\n\nLegacy key 'targetItem' is also supported.",
+    "jei.blackcard.tag_black_card.information.description": "A tag-based Black Card that can craft any item from a specified tag.\nUse \u00a7bShift + Scroll\u00a7r to cycle through items in the tag.\n\nNBT Keys:\n- bctag: Tag ID string or list (e.g. \"minecraft:logs\" or [\"minecraft:logs\",\"forge:ingots/iron\"])\n- targetCount: Output count\n- currentItemIndex: Current cycle index\n- bcblacklist: Blacklisted item IDs\n\nLegacy key 'targetTag' is also supported.",
+    "jei.blackcard.mod_black_card.information.description": "A mod-based Black Card that can craft any item from a specified mod.\nUse \u00a7bShift + Scroll\u00a7r to cycle through items in the mod.\n\nNBT Keys:\n- bcmodid: Mod ID string or list (e.g. \"mekanism\" or [\"mekanism\",\"thermal\"])\n- targetCount: Output count\n- currentItemIndex: Current cycle index\n- bcblacklist: Blacklisted item IDs\n\nLegacy key 'targetMod' is also supported."
 }

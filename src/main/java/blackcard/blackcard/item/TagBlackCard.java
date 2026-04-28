@@ -1,6 +1,7 @@
 package blackcard.blackcard.item;
 
 import blackcard.blackcard.config.BlackCardConfig;
+import blackcard.blackcard.util.BlackCardUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -26,18 +27,30 @@ import java.util.List;
 /**
  * 标签型黑卡 - 根据物品标签（Tag）生成物品
  * Shift+滚轮可以切换标签内的具体物品
- * NBT结构：targetTag(字符串), targetCount(整数), currentItemIndex(整数), targetItem(字符串-自动同步)
  *
- * 信息栏显示：标签名称、当前物品、顺序[1|20]
+ * NBT结构（Cell4风格，支持列表）：
+ *   bctag: "minecraft:logs" 或 ["minecraft:logs", "forge:ingots/iron"]
+ *   targetCount: 整数（默认1）
+ *   currentItemIndex: 整数（当前循环索引）
+ *   targetItem: 字符串（自动同步，当前选中的物品ID）
+ *   bcblacklist: "minecraft:bedrock" 或 ["minecraft:bedrock", "minecraft:command_block"]
+ *
+ * 兼容旧NBT格式：
+ *   targetTag: "minecraft:logs"（单字符串，自动兼容）
  */
 public class TagBlackCard extends Item {
 
     public TagBlackCard() {
-        super(new Item.Properties().rarity(Rarity.EPIC));
+        super(new Item.Properties());
     }
 
     public TagBlackCard(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public Rarity getRarity(ItemStack stack) {
+        return Rarity.EPIC;
     }
 
     @Override
@@ -51,7 +64,7 @@ public class TagBlackCard extends Item {
             CompoundTag tag = stack.getTag();
             if (tag != null && tag.contains("targetItem", 8)) {
                 String targetItemId = tag.getString("targetItem");
-                String targetItemName = getItemLocalizedName(targetItemId);
+                String targetItemName = BlackCardUtil.getItemLocalizedName(targetItemId);
 
                 String suffix = Component.translatable("item.blackcard.tag_black_card.suffix").getString();
 
@@ -68,32 +81,32 @@ public class TagBlackCard extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-        CompoundTag tag = stack.getTag();
-        if (tag == null) return;
+        List<String> tagIds = BlackCardUtil.getTagIdentifiers(stack);
+        if (tagIds.isEmpty()) return;
 
-        // 显示标签
-        if (tag.contains("targetTag", 8)) {
-            String targetTag = tag.getString("targetTag");
+        // Display all bound tags
+        for (String tagId : tagIds) {
             tooltip.add(
-                    Component.translatable("item.blackcard.tag_black_card.tag", targetTag)
+                    Component.translatable("item.blackcard.tag_black_card.tag", tagId)
                             .withStyle(ChatFormatting.DARK_AQUA)
             );
         }
 
-        // 显示当前选中的物品
-        if (tag.contains("targetItem", 8)) {
+        // Display currently selected item
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.contains("targetItem", 8)) {
             String targetItemId = tag.getString("targetItem");
-            String targetItemName = getItemLocalizedName(targetItemId);
+            String targetItemName = BlackCardUtil.getItemLocalizedName(targetItemId);
 
             tooltip.add(
                     Component.translatable("item.blackcard.tag_black_card.generates", targetItemName)
                             .withStyle(ChatFormatting.WHITE)
             );
 
-            // 显示数量
-            if (tag.contains("targetCount", 3)) {
-                int targetCount = tag.getInt("targetCount");
-                int maxStackSize = getMaxStackSizeForItem(targetItemId);
+            // Display count
+            int targetCount = BlackCardUtil.getTargetCount(stack);
+            if (targetCount > 1) {
+                int maxStackSize = BlackCardUtil.getMaxStackSizeForItem(targetItemId);
                 int displayCount = Math.min(targetCount, maxStackSize);
 
                 String prefix = Component.translatable("item.blackcard.tag_black_card.amount.prefix").getString();
@@ -103,41 +116,46 @@ public class TagBlackCard extends Item {
             }
         }
 
-        // 显示顺序 [ 1 / 20 ] 及切换提示
-        if (tag.contains("targetTag", 8)) {
-            String targetTagStr = tag.getString("targetTag");
-            List<Item> items = getItemsInTag(targetTagStr);
-            if (!items.isEmpty()) {
-                int currentIndex = tag.contains("currentItemIndex", 3) ? tag.getInt("currentItemIndex") : 0;
-                // 显示顺序：[ 当前+1 / 总数 ]
-                String indexInfo = "[ " + (currentIndex + 1) + " / " + items.size() + " ]";
-                tooltip.add(Component.literal(indexInfo).withStyle(ChatFormatting.GRAY));
+        // Display order [1/20] and cycle hint (after filtering blacklist)
+        List<Item> availableItems = collectAvailableItems(stack, tagIds);
+        if (!availableItems.isEmpty()) {
+            int currentIndex = BlackCardUtil.getCycleIndex(stack);
+            String indexInfo = "[ " + (currentIndex + 1) + " / " + availableItems.size() + " ]";
+            tooltip.add(Component.literal(indexInfo).withStyle(ChatFormatting.GRAY));
 
-                // 切换提示
-                tooltip.add(
-                        Component.translatable("item.blackcard.tag_black_card.cycle_hint")
-                                .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
-                );
-            }
+            tooltip.add(
+                    Component.translatable("item.blackcard.tag_black_card.cycle_hint")
+                            .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
+            );
+        }
+
+        // Display blacklist
+        List<String> blacklist = BlackCardUtil.getBlacklistIds(stack);
+        for (String blId : blacklist) {
+            String blName = BlackCardUtil.getItemLocalizedName(blId);
+            tooltip.add(
+                    Component.translatable("tooltip.blackcard.blacklist_item", blName)
+                            .withStyle(ChatFormatting.RED)
+            );
         }
     }
 
     /**
-     * 切换标签内的物品（Shift+滚轮调用）
+     * 切换标签内的物品（Shift+滚轮调用），跳过黑名单物品
      */
     public static void cycleTargetItem(ItemStack stack, int delta) {
         CompoundTag tag = stack.getOrCreateTag();
-        if (!tag.contains("targetTag", 8)) return;
+        List<String> tagIds = BlackCardUtil.getTagIdentifiers(stack);
+        if (tagIds.isEmpty()) return;
 
-        String targetTagStr = tag.getString("targetTag");
-        List<Item> items = getItemsInTag(targetTagStr);
+        List<Item> items = collectAvailableItems(stack, tagIds);
         if (items.isEmpty()) return;
 
-        int currentIndex = tag.contains("currentItemIndex", 3) ? tag.getInt("currentItemIndex") : 0;
+        int currentIndex = BlackCardUtil.getCycleIndex(stack);
         int size = items.size();
 
         currentIndex = ((currentIndex + delta) % size + size) % size;
-        tag.putInt("currentItemIndex", currentIndex);
+        BlackCardUtil.setCycleIndex(stack, currentIndex);
 
         Item selectedItem = items.get(currentIndex);
         ResourceLocation itemIdRL = BuiltInRegistries.ITEM.getKey(selectedItem);
@@ -145,20 +163,22 @@ public class TagBlackCard extends Item {
     }
 
     /**
-     * 根据标签字符串获取所有物品
+     * 根据标签字符串列表获取所有物品（原始列表，不排除黑名单）
      */
-    public static List<Item> getItemsInTag(String tagString) {
+    public static List<Item> collectAllItemsFromTags(List<String> tagStrings) {
         List<Item> items = new ArrayList<>();
-        ResourceLocation tagRL = ResourceLocation.tryParse(tagString);
-        if (tagRL == null) return items;
+        for (String tagString : tagStrings) {
+            ResourceLocation tagRL = ResourceLocation.tryParse(tagString);
+            if (tagRL == null) continue;
 
-        TagKey<Item> tagKey = TagKey.create(Registries.ITEM, tagRL);
-        var tagHolder = BuiltInRegistries.ITEM.getTag(tagKey);
-        if (tagHolder.isPresent()) {
-            for (Holder<Item> holder : tagHolder.get()) {
-                Item item = holder.value();
-                if (item != Items.AIR) {
-                    items.add(item);
+            TagKey<Item> tagKey = TagKey.create(Registries.ITEM, tagRL);
+            var tagHolder = BuiltInRegistries.ITEM.getTag(tagKey);
+            if (tagHolder.isPresent()) {
+                for (Holder<Item> holder : tagHolder.get()) {
+                    Item item = holder.value();
+                    if (item != Items.AIR && !items.contains(item)) {
+                        items.add(item);
+                    }
                 }
             }
         }
@@ -166,39 +186,48 @@ public class TagBlackCard extends Item {
     }
 
     /**
-     * 初始化标签黑卡的targetItem
+     * 获取可用物品列表（排除黑名单物品）
+     */
+    private static List<Item> collectAvailableItems(ItemStack stack, List<String> tagIds) {
+        List<Item> allItems = collectAllItemsFromTags(tagIds);
+        List<String> blacklist = BlackCardUtil.getBlacklistIds(stack);
+        if (blacklist.isEmpty()) return allItems;
+
+        List<Item> available = new ArrayList<>();
+        for (Item item : allItems) {
+            ResourceLocation rl = BuiltInRegistries.ITEM.getKey(item);
+            if (!blacklist.contains(rl.toString())) {
+                available.add(item);
+            }
+        }
+        return available;
+    }
+
+    /**
+     * 根据标签字符串获取所有物品（保留向后兼容）
+     */
+    public static List<Item> getItemsInTag(String tagString) {
+        return collectAllItemsFromTags(List.of(tagString));
+    }
+
+    /**
+     * 初始化标签黑卡的targetItem，跳过黑名单物品
      */
     public static void ensureTargetItemSynced(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("targetTag", 8)) return;
+        List<String> tagIds = BlackCardUtil.getTagIdentifiers(stack);
+        if (tagIds.isEmpty()) return;
 
-        String targetTagStr = tag.getString("targetTag");
-        List<Item> items = getItemsInTag(targetTagStr);
+        List<Item> items = collectAvailableItems(stack, tagIds);
         if (items.isEmpty()) return;
 
-        int currentIndex = tag.contains("currentItemIndex", 3) ? tag.getInt("currentItemIndex") : 0;
+        int currentIndex = BlackCardUtil.getCycleIndex(stack);
         if (currentIndex < 0 || currentIndex >= items.size()) {
             currentIndex = 0;
-            tag.putInt("currentItemIndex", 0);
+            BlackCardUtil.setCycleIndex(stack, 0);
         }
 
         Item selectedItem = items.get(currentIndex);
         ResourceLocation itemIdRL = BuiltInRegistries.ITEM.getKey(selectedItem);
-        tag.putString("targetItem", itemIdRL.toString());
-    }
-
-    private int getMaxStackSizeForItem(String itemId) {
-        ResourceLocation rl = ResourceLocation.tryParse(itemId);
-        if (rl == null) return 64;
-        Item item = BuiltInRegistries.ITEM.get(rl);
-        return (item == null || item == Items.AIR) ? 64 : item.getMaxStackSize();
-    }
-
-    private String getItemLocalizedName(String itemId) {
-        ResourceLocation rl = ResourceLocation.tryParse(itemId);
-        if (rl == null) return "Unknown Item";
-        Item item = BuiltInRegistries.ITEM.get(rl);
-        if (item == null || item == Items.AIR) return "Unknown Item";
-        return new ItemStack(item).getDisplayName().getString();
+        stack.getOrCreateTag().putString("targetItem", itemIdRL.toString());
     }
 }

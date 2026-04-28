@@ -4,11 +4,15 @@ license="MIT"
 
 [[mods]]
 modId="blackcard"
-version="1.2.0"
+version="2.0.0"
 displayName="BlackCard"
-description="A universal item voucher mod. Black Cards can craft any item! Now with Tag Black Cards (by tag) and Mod Black Cards (by modid)."
+description='''
+A universal item voucher mod. Black Cards can craft any item!
+Now supports multi-item lists, blacklists, and Cell4 integration.
+Use Black Card + AE2 Item Cell Housing to craft Cell4 Infinity Cells.
+'''
 authors="Huaiker"
-credits="Thanks for Deepseek Qianwen,other people"
+credits="Thanks to Deepseek, Qianwen, and other contributors"
 logoFile="blackcard_logo.png"
 
 [[dependencies.blackcard]]
@@ -26,8 +30,22 @@ ordering="NONE"
 side="BOTH"
 
 [[dependencies.blackcard]]
-modId = "jei"
-mandatory = false
-versionRange = "[15,)"
-ordering = "NONE"
-side = "CLIENT"
+modId="jei"
+mandatory=false
+versionRange="[15,)"
+ordering="NONE"
+side="CLIENT"
+
+[[dependencies.blackcard]]
+modId="ae2"
+mandatory=false
+versionRange="[15.0.0,16.0.0)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.blackcard]]
+modId="cell4"
+mandatory=false
+versionRange="[1.0.0,)"
+ordering="AFTER"
+side="BOTH"

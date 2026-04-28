@@ -1,5 +1,6 @@
 package blackcard.blackcard;
 
+import blackcard.blackcard.compat.cell4.Cell4IntegrationRecipe;
 import blackcard.blackcard.config.BlackCardConfig;
 import blackcard.blackcard.init.ItemInit;
 import blackcard.blackcard.network.NetworkHandler;
@@ -17,17 +18,18 @@ public class BlackCard {
     public BlackCard() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        // 注册配置
+        // Register config
         BlackCardConfig.register();
 
-        // 注册物品和配方序列化器
+        // Register items and recipe serializers
         ItemInit.ITEMS.register(modEventBus);
         UniversalNBTRecipe.RECIPE_SERIALIZERS.register(modEventBus);
+        Cell4IntegrationRecipe.RECIPE_SERIALIZERS.register(modEventBus);
 
-        // 注册网络通信
+        // Register network communication
         NetworkHandler.register();
 
-        // 添加物品到创造模式标签页
+        // Add items to creative mode tab
         modEventBus.addListener(this::addItemsToTabs);
     }
 

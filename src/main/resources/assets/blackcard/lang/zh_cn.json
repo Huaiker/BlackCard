@@ -1,24 +1,33 @@
 {
-    "config.blackcard.enableCustomDisplayName": "启用黑卡自定义显示名称",
-    "config.blackcard.general.enableCustomDisplayName.tooltip": "启用黑卡的自定义显示名称。\n开启时：显示为「[物品] 黑卡」（例如：「钻石 黑卡」）。\n关闭时：仅显示为「黑卡」。",
-    "item.blackcard.black_card": "黑卡",
-    "item.blackcard.black_card.amount.prefix": "数量：",
-    "item.blackcard.black_card.generates": "合成：%s",
-    "item.blackcard.black_card.suffix": "黑卡",
-    "item.blackcard.tag_black_card": "标签黑卡",
-    "item.blackcard.tag_black_card.amount.prefix": "数量：",
-    "item.blackcard.tag_black_card.generates": "合成：%s",
-    "item.blackcard.tag_black_card.suffix": "标签黑卡",
-    "item.blackcard.tag_black_card.tag": "标签：%s",
-    "item.blackcard.tag_black_card.cycle_hint": "Shift + 滚轮切换物品",
-    "item.blackcard.mod_black_card": "模组黑卡",
-    "item.blackcard.mod_black_card.amount.prefix": "数量：",
-    "item.blackcard.mod_black_card.generates": "合成：%s",
-    "item.blackcard.mod_black_card.suffix": "模组黑卡",
-    "item.blackcard.mod_black_card.mod": "模组：%s",
-    "item.blackcard.mod_black_card.cycle_hint": "Shift + 滚轮切换物品",
-    "pack.blackcard.description": "黑卡模组 - 合成任意物品！",
-    "jei.blackcard.information.description": "将此黑卡单独放入合成栏，即可合成其 NBT 中指定的物品。\n\n\n§o§e（受targetCount与targetItem控制）",
-    "jei.blackcard.tag_black_card.information.description": "标签型黑卡，可以合成指定标签内的任意物品。\n使用 §bShift + 滚轮§r 切换标签内的具体物品。\n\n§o§e（受targetTag、targetCount和currentItemIndex控制）",
-    "jei.blackcard.mod_black_card.information.description": "模组型黑卡，可以合成指定模组下的任意物品。\n使用 §bShift + 滚轮§r 切换模组内的具体物品。\n\n§o§e（受targetMod、targetCount和currentItemIndex控制）"
+    "config.blackcard.enableCustomDisplayName": "\u542f\u7528\u9ed1\u5361\u81ea\u5b9a\u4e49\u663e\u793a\u540d\u79f0",
+    "config.blackcard.general.enableCustomDisplayName.tooltip": "\u542f\u7528\u9ed1\u5361\u7684\u81ea\u5b9a\u4e49\u663e\u793a\u540d\u79f0\u3002\n\u5f00\u542f\u65f6\uff1a\u663e\u793a\u4e3a\u300c[\u7269\u54c1] \u9ed1\u5361\u300d\uff08\u4f8b\u5982\uff1a\u300c\u94bb\u77f3 \u9ed1\u5361\u300d\uff09\u3002\n\u5173\u95ed\u65f6\uff1a\u4ec5\u663e\u793a\u4e3a\u300c\u9ed1\u5361\u300d\u3002",
+
+    "item.blackcard.black_card": "\u9ed1\u5361",
+    "item.blackcard.black_card.amount.prefix": "\u6570\u91cf\uff1a",
+    "item.blackcard.black_card.generates": "\u5408\u6210\uff1a%s",
+    "item.blackcard.black_card.suffix": "\u9ed1\u5361",
+    "item.blackcard.black_card_name_multi": "\u9ed1\u5361\uff1a%s\u79cd\u7269\u54c1",
+
+    "item.blackcard.tag_black_card": "\u6807\u7b7e\u9ed1\u5361",
+    "item.blackcard.tag_black_card.amount.prefix": "\u6570\u91cf\uff1a",
+    "item.blackcard.tag_black_card.generates": "\u5408\u6210\uff1a%s",
+    "item.blackcard.tag_black_card.suffix": "\u6807\u7b7e\u9ed1\u5361",
+    "item.blackcard.tag_black_card.tag": "\u6807\u7b7e\uff1a%s",
+    "item.blackcard.tag_black_card.cycle_hint": "Shift + \u6eda\u8f6e\u5207\u6362\u7269\u54c1",
+
+    "item.blackcard.mod_black_card": "\u6a21\u7ec4\u9ed1\u5361",
+    "item.blackcard.mod_black_card.amount.prefix": "\u6570\u91cf\uff1a",
+    "item.blackcard.mod_black_card.generates": "\u5408\u6210\uff1a%s",
+    "item.blackcard.mod_black_card.suffix": "\u6a21\u7ec4\u9ed1\u5361",
+    "item.blackcard.mod_black_card.mod": "\u6a21\u7ec4\uff1a%s",
+    "item.blackcard.mod_black_card.cycle_hint": "Shift + \u6eda\u8f6e\u5207\u6362\u7269\u54c1",
+
+    "tooltip.blackcard.item_count": "\u5df2\u7ed1\u5b9a%s\u79cd\u7269\u54c1",
+    "tooltip.blackcard.blacklist_item": "\u2716 %s",
+
+    "pack.blackcard.description": "\u9ed1\u5361\u6a21\u7ec4 - \u5408\u6210\u4efb\u610f\u7269\u54c1\uff01",
+
+    "jei.blackcard.information.description": "\u5c06\u6b64\u9ed1\u5361\u5355\u72ec\u653e\u5165\u5408\u6210\u680f\uff0c\u5373\u53ef\u5408\u6210\u5176 NBT \u4e2d\u6307\u5b9a\u7684\u7269\u54c1\u3002\n\nNBT \u952e\uff1a\n- bcitem\uff1a\u7269\u54c1ID\u5b57\u7b26\u4e32\u6216\u5217\u8868\uff08\u5982 \"minecraft:diamond\" \u6216 [\"minecraft:diamond\",\"minecraft:iron_ingot\"]\uff09\n- targetCount\uff1a\u8f93\u51fa\u6570\u91cf\uff08\u6574\u6570\uff0c\u9ed8\u8ba41\uff09\n- bcblacklist\uff1a\u9ed1\u540d\u5355\u7269\u54c1ID\uff08\u5b57\u7b26\u4e32\u6216\u5217\u8868\uff09\n\n\u517c\u5bb9\u65e7\u7248\u952e 'targetItem'",
+    "jei.blackcard.tag_black_card.information.description": "\u6807\u7b7e\u578b\u9ed1\u5361\uff0c\u53ef\u4ee5\u5408\u6210\u6307\u5b9a\u6807\u7b7e\u5185\u7684\u4efb\u610f\u7269\u54c1\u3002\n\u4f7f\u7528 \u00a7bShift + \u6eda\u8f6e\u00a7r \u5207\u6362\u6807\u7b7e\u5185\u7684\u5177\u4f53\u7269\u54c1\u3002\n\nNBT \u952e\uff1a\n- bctag\uff1a\u6807\u7b7eID\u5b57\u7b26\u4e32\u6216\u5217\u8868\n- targetCount\uff1a\u8f93\u51fa\u6570\u91cf\n- currentItemIndex\uff1a\u5f53\u524d\u5faa\u73af\u7d22\u5f15\n- bcblacklist\uff1a\u9ed1\u540d\u5355\u7269\u54c1ID\n\n\u517c\u5bb9\u65e7\u7248\u952e 'targetTag'",
+    "jei.blackcard.mod_black_card.information.description": "\u6a21\u7ec4\u578b\u9ed1\u5361\uff0c\u53ef\u4ee5\u5408\u6210\u6307\u5b9a\u6a21\u7ec4\u4e0b\u7684\u4efb\u610f\u7269\u54c1\u3002\n\u4f7f\u7528 \u00a7bShift + \u6eda\u8f6e\u00a7r \u5207\u6362\u6a21\u7ec4\u5185\u7684\u5177\u4f53\u7269\u54c1\u3002\n\nNBT \u952e\uff1a\n- bcmodid\uff1a\u6a21\u7ec4ID\u5b57\u7b26\u4e32\u6216\u5217\u8868\n- targetCount\uff1a\u8f93\u51fa\u6570\u91cf\n- currentItemIndex\uff1a\u5f53\u524d\u5faa\u73af\u7d22\u5f15\n- bcblacklist\uff1a\u9ed1\u540d\u5355\u7269\u54c1ID\n\n\u517c\u5bb9\u65e7\u7248\u952e 'targetMod'"
 }
