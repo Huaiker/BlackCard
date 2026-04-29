@@ -2,11 +2,14 @@ package blackcard.blackcard.client;
 
 import blackcard.blackcard.BlackCard;
 import blackcard.blackcard.init.ItemInit;
+import blackcard.blackcard.item.LocalizedBlackCard;
 import blackcard.blackcard.item.ModBlackCard;
 import blackcard.blackcard.item.TagBlackCard;
+import blackcard.blackcard.network.CycleItemPacket;
 import blackcard.blackcard.network.CycleModItemPacket;
 import blackcard.blackcard.network.CycleTagItemPacket;
 import blackcard.blackcard.network.NetworkHandler;
+import blackcard.blackcard.util.BlackCardUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -15,8 +18,11 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.List;
+
 /**
- * 客户端事件处理器 - 监听Shift+滚轮切换标签黑卡/模组黑卡物品
+ * 客户端事件处理器 - 监听Shift+滚轮切换黑卡物品
+ * 支持物品黑卡（多物品绑定时）、标签黑卡、模组黑卡
  */
 @Mod.EventBusSubscriber(modid = BlackCard.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ClientEventHandler {
@@ -33,13 +39,30 @@ public class ClientEventHandler {
         double scrollDelta = event.getScrollDelta();
         if (scrollDelta == 0) return;
 
-        // 检查主手和副手是否持有标签黑卡或模组黑卡
+        // 检查主手和副手是否持有黑卡
         ItemStack mainHand = player.getMainHandItem();
         ItemStack offHand = player.getOffhandItem();
 
         int direction = scrollDelta > 0 ? -1 : 1; // 向上滚动=上一个物品，向下=下一个物品
 
         boolean handled = false;
+
+        // 物品黑卡处理（多物品绑定时支持切换）
+        if (mainHand.getItem() == ItemInit.BLACK_CARD.get()) {
+            if (shouldAllowItemCardCycling(mainHand)) {
+                int slot = player.getInventory().selected;
+                NetworkHandler.CHANNEL.sendToServer(new CycleItemPacket(slot, direction));
+                LocalizedBlackCard.cycleTargetItem(mainHand, direction);
+                handled = true;
+            }
+        } else if (offHand.getItem() == ItemInit.BLACK_CARD.get()) {
+            if (shouldAllowItemCardCycling(offHand)) {
+                int slot = 40; // 副手槽位索引
+                NetworkHandler.CHANNEL.sendToServer(new CycleItemPacket(slot, direction));
+                LocalizedBlackCard.cycleTargetItem(offHand, direction);
+                handled = true;
+            }
+        }
 
         // 标签黑卡处理
         if (mainHand.getItem() == ItemInit.TAG_BLACK_CARD.get()) {
@@ -70,5 +93,13 @@ public class ClientEventHandler {
         if (handled) {
             event.setCanceled(true); // 取消默认的滚轮行为（如快捷栏切换）
         }
+    }
+
+    /**
+     * 判断物品黑卡是否允许切换（仅当绑定了多个物品时允许）
+     */
+    private static boolean shouldAllowItemCardCycling(ItemStack stack) {
+        List<String> itemIds = BlackCardUtil.getItemIdentifiers(stack);
+        return itemIds.size() > 1;
     }
 }

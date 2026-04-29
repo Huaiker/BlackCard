@@ -19,11 +19,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import blackcard.blackcard.BlackCard;
 import blackcard.blackcard.init.ItemInit;
+import blackcard.blackcard.item.LocalizedBlackCard;
 import blackcard.blackcard.item.ModBlackCard;
 import blackcard.blackcard.item.TagBlackCard;
 import blackcard.blackcard.util.BlackCardUtil;
 
-import java.util.List;
 
 public class UniversalNBTRecipe extends CustomRecipe {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =
@@ -70,6 +70,11 @@ public class UniversalNBTRecipe extends CustomRecipe {
 
         if (nbtItem.isEmpty() || totalItems != 1) return false;
 
+        // Item black card (multi-item): ensure targetItem is synced
+        if (nbtItem.getItem() == ItemInit.BLACK_CARD.get()) {
+            LocalizedBlackCard.ensureTargetItemSynced(nbtItem);
+        }
+
         // Tag black card: ensure targetItem is synced
         if (nbtItem.getItem() == ItemInit.TAG_BLACK_CARD.get()) {
             TagBlackCard.ensureTargetItemSynced(nbtItem);
@@ -112,48 +117,12 @@ public class UniversalNBTRecipe extends CustomRecipe {
             return ItemStack.EMPTY;
         }
 
-        // Determine which type of black card this is
-        if (nbtItem.getItem() == ItemInit.BLACK_CARD.get()) {
-            // Single item black card: resolve from bcitem list
-            return resolveFromItemList(nbtItem);
-        } else if (nbtItem.getItem() == ItemInit.TAG_BLACK_CARD.get() ||
-                   nbtItem.getItem() == ItemInit.MOD_BLACK_CARD.get()) {
-            // Tag/Mod black card: resolve from targetItem (already synced)
-            return resolveFromTargetItem(nbtItem);
-        }
-
-        // Fallback: try old format
+        // All card types: resolve from targetItem (synced by matches() or cycleTargetItem())
         return resolveFromTargetItem(nbtItem);
     }
 
     /**
-     * Resolve output from a single-item black card using the bcitem list.
-     * Skips blacklisted items.
-     */
-    private ItemStack resolveFromItemList(ItemStack cardStack) {
-        List<String> itemIds = BlackCardUtil.getItemIdentifiers(cardStack);
-        int count = BlackCardUtil.getTargetCount(cardStack);
-
-        for (String id : itemIds) {
-            // Skip blacklisted items
-            if (BlackCardUtil.isBlacklisted(cardStack, id)) continue;
-
-            ResourceLocation rl = ResourceLocation.tryParse(id);
-            if (rl == null) continue;
-
-            Item targetItem = BuiltInRegistries.ITEM.get(rl);
-            if (targetItem == null || targetItem == Items.AIR) continue;
-
-            int maxStackSize = targetItem.getMaxStackSize();
-            int actualCount = Math.min(Math.max(1, count), maxStackSize);
-            return new ItemStack(targetItem, actualCount);
-        }
-
-        return ItemStack.EMPTY;
-    }
-
-    /**
-     * Resolve output from targetItem string (used by tag/mod cards).
+     * Resolve output from targetItem string (used by all card types).
      * Checks blacklist before producing output.
      */
     private ItemStack resolveFromTargetItem(ItemStack cardStack) {

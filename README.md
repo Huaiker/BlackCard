@@ -14,7 +14,7 @@ A universal item voucher mod — Black Cards can craft any item! Supports multi-
 
 ### 1. Item Black Card (`black_card`)
 
-Binds one or more specific items. Crafting produces the first non-blacklisted item.
+Binds one or more specific items. When multiple items are bound, **Shift + Scroll** to cycle through them.
 
 ```mcfunction
 # Single item
@@ -68,7 +68,7 @@ Binds one or more mod IDs. **Shift + Scroll** to cycle through items from the mo
 | `bcmodid` | `targetMod` | Mod ID (string or list) | `cell4modid` |
 | `bcblacklist` | — | Blacklisted item IDs (string or list) | `cell4blacklist` |
 | `targetCount` | `targetCount` | Crafting output count (int, default 1) | — |
-| `currentItemIndex` | `currentItemIndex` | Current cycle index (tag/mod cards) | — |
+| `currentItemIndex` | `currentItemIndex` | Current cycle index (all cards with multi-value) | — |
 | `targetItem` | `targetItem` | Currently selected item ID (auto-synced) | — |
 
 > All identifier keys support both **single string** and **string list** formats, fully consistent with Cell⁴'s NBT format. Legacy keys are automatically compatible.
@@ -80,7 +80,7 @@ Binds one or more mod IDs. **Shift + Scroll** to cycle through items from the mo
 All card types support the `bcblacklist` key to exclude specific items:
 
 - **Skipped** during crafting
-- **Excluded** from cycling on tag/mod cards
+- **Excluded** from cycling on all cards with multi-value bindings
 - Displayed with red markers in tooltips
 
 ```mcfunction
@@ -127,7 +127,7 @@ During crafting, BlackCard NBT is automatically converted to Cell⁴ format:
 ## Usage
 
 1. **Craft**: Place a Black Card alone in the crafting grid to produce the specified item (card is not consumed)
-2. **Cycle**: Hold a Tag/Mod Black Card and **Shift + Scroll** to switch items
+2. **Cycle**: Hold a Black Card (multi-item), Tag Black Card, or Mod Black Card and **Shift + Scroll** to switch items
 3. **Integrate**: Black Card + AE2 Cell Housing → Cell⁴ Infinity Cell
 
 ---

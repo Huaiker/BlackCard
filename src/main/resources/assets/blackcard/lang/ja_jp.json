@@ -6,6 +6,7 @@
     "item.blackcard.black_card.generates": "クラフト：%s",
     "item.blackcard.black_card.suffix": "ブラックカード",
     "item.blackcard.black_card_name_multi": "ブラックカード：%s種のアイテム",
+    "item.blackcard.black_card.cycle_hint": "Shift + スクロールでアイテムを切り替え",
     "item.blackcard.tag_black_card": "タグブラックカード",
     "item.blackcard.tag_black_card.amount.prefix": "数量：",
     "item.blackcard.tag_black_card.generates": "クラフト：%s",
@@ -21,7 +22,7 @@
     "tooltip.blackcard.item_count": "%s種のアイテムをバインド",
     "tooltip.blackcard.blacklist_item": "\u2716 %s",
     "pack.blackcard.description": "ブラックカードMOD - 任意のアイテムをクラフト！",
-    "jei.blackcard.information.description": "このブラックカードをクラフト枠に単体で置くと、そのNBTに指定されたアイテムをクラフトします。\n\nNBTキー：bcitem、targetCount、bcblacklist",
+    "jei.blackcard.information.description": "このブラックカードをクラフト枠に単体で置くと、そのNBTに指定されたアイテムをクラフトします。\n複数のアイテムをバインドしている場合、\u00a7bShift + スクロール\u00a7rでアイテムを切り替えられます。\n\nNBTキー：bcitem、targetCount、bcblacklist",
     "jei.blackcard.tag_black_card.information.description": "タグベースのブラックカード。指定したタグに属するアイテムをクラフトできます。\nShift + スクロールでアイテムを切り替え。\n\nNBTキー：bctag、targetCount、bcblacklist",
     "jei.blackcard.mod_black_card.information.description": "Modベースのブラックカード。指定したModに属するアイテムをクラフトできます。\nShift + スクロールでアイテムを切り替え。\n\nNBTキー：bcmodid、targetCount、bcblacklist"
 }

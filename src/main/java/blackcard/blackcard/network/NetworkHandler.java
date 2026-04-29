@@ -36,5 +36,12 @@ public class NetworkHandler {
                 .decoder(CycleModItemPacket::decode)
                 .consumerMainThread(CycleModItemPacket::handle)
                 .add();
+
+        // 物品黑卡切换数据包（多物品绑定时）
+        CHANNEL.messageBuilder(CycleItemPacket.class, packetId++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(CycleItemPacket::encode)
+                .decoder(CycleItemPacket::decode)
+                .consumerMainThread(CycleItemPacket::handle)
+                .add();
     }
 }
