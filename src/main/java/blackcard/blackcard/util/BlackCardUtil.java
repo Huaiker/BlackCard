@@ -11,37 +11,31 @@ import net.minecraft.world.item.Items;
 import java.util.*;
 
 /**
- * Shared NBT utility for BlackCard.
+ * Shared NBT utility for BlackCard v2.0.
  * Provides parsing of list-format NBT keys and blacklist support,
  * following the same pattern as Cell4's Cell4Util.
  *
  * NBT key conventions (aligned with Cell4):
- * - "bcitem"     : item identifiers (string or string list)
- * - "bctag"      : tag identifiers (string or string list)
- * - "bcmodid"    : mod ID identifiers (string or string list)
- * - "bcblacklist": blacklisted item identifiers (string or string list)
- *
- * Legacy NBT keys are still supported for backwards compatibility:
- * - "targetItem"     -> maps to "bcitem"
- * - "targetTag"      -> maps to "bctag"
- * - "targetMod"      -> maps to "bcmodid"
- * - "targetCount"    : output count (integer, default 1)
+ * - "bcitem"          : item identifiers (string or string list)
+ * - "bctag"           : tag identifiers (string or string list)
+ * - "bcmodid"         : mod ID identifiers (string or string list)
+ * - "bcblacklist"     : blacklisted item identifiers (string or string list)
+ * - "targetItem"      : currently selected item ID for crafting (auto-synced)
+ * - "targetCount"     : output count (integer, default 1)
  * - "currentItemIndex": current cycle index (integer)
  */
 public class BlackCardUtil {
 
-    // New NBT keys (Cell4-aligned)
+    // NBT keys (Cell4-aligned)
     public static final String NBT_ITEM = "bcitem";
     public static final String NBT_TAG = "bctag";
     public static final String NBT_MODID = "bcmodid";
     public static final String NBT_BLACKLIST = "bcblacklist";
+    public static final String NBT_TARGET_ITEM = "targetItem";
     public static final String NBT_COUNT = "targetCount";
     public static final String NBT_CYCLE_INDEX = "currentItemIndex";
 
-    // Legacy NBT keys
-    private static final String LEGACY_ITEM = "targetItem";
-    private static final String LEGACY_TAG = "targetTag";
-    private static final String LEGACY_MODID = "targetMod";
+
 
     /**
      * Parse a string list from NBT, supporting both single string and list formats.
@@ -86,7 +80,7 @@ public class BlackCardUtil {
     }
 
     /**
-     * Set a single identifier (legacy format) on an existing ItemStack.
+     * Set a single identifier on an existing ItemStack.
      */
     public static void setString(ItemStack stack, String key, String id) {
         var tag = stack.getOrCreateTag();
@@ -94,44 +88,33 @@ public class BlackCardUtil {
     }
 
     /**
-     * Get item identifiers from NBT. Checks both new key "bcitem" and legacy key "targetItem".
+     * Get item identifiers from NBT (bcitem key).
      */
     public static List<String> getItemIdentifiers(ItemStack stack) {
         var tag = stack.getTag();
         if (tag == null) return Collections.emptyList();
 
-        // Try new key first
-        List<String> result = parseStringList(tag, NBT_ITEM);
-        if (!result.isEmpty()) return result;
-
-        // Fall back to legacy key
-        return parseStringList(tag, LEGACY_ITEM);
+        return parseStringList(tag, NBT_ITEM);
     }
 
     /**
-     * Get tag identifiers from NBT. Checks both new key "bctag" and legacy key "targetTag".
+     * Get tag identifiers from NBT (bctag key).
      */
     public static List<String> getTagIdentifiers(ItemStack stack) {
         var tag = stack.getTag();
         if (tag == null) return Collections.emptyList();
 
-        List<String> result = parseStringList(tag, NBT_TAG);
-        if (!result.isEmpty()) return result;
-
-        return parseStringList(tag, LEGACY_TAG);
+        return parseStringList(tag, NBT_TAG);
     }
 
     /**
-     * Get mod ID identifiers from NBT. Checks both new key "bcmodid" and legacy key "targetMod".
+     * Get mod ID identifiers from NBT (bcmodid key).
      */
     public static List<String> getModIdIdentifiers(ItemStack stack) {
         var tag = stack.getTag();
         if (tag == null) return Collections.emptyList();
 
-        List<String> result = parseStringList(tag, NBT_MODID);
-        if (!result.isEmpty()) return result;
-
-        return parseStringList(tag, LEGACY_MODID);
+        return parseStringList(tag, NBT_MODID);
     }
 
     /**

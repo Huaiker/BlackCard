@@ -23,8 +23,11 @@ Binds one or more specific items. When multiple items are bound, **Shift + Scrol
 # Multiple items (list format, aligned with Cell⁴)
 /give @p blackcard:black_card{bcitem:["minecraft:diamond","minecraft:iron_ingot"],targetCount:1}
 
-# With blacklist
-/give @p blackcard:black_card{bcitem:"minecraft:diamond",targetCount:1,bcblacklist:["minecraft:bedrock"]}
+# Single blacklist item (string format)
+/give @p blackcard:black_card{bcitem:"minecraft:diamond",targetCount:1,bcblacklist:"minecraft:bedrock"}
+
+# Multiple blacklist items (list format)
+/give @p blackcard:black_card{bcitem:["minecraft:diamond","minecraft:iron_ingot","minecraft:gold_ingot"],targetCount:1,bcblacklist:["minecraft:bedrock","minecraft:command_block","minecraft:barrier"]}
 ```
 
 ### 2. Tag Black Card (`tag_black_card`)
@@ -38,8 +41,11 @@ Binds one or more item tags. **Shift + Scroll** to cycle through items within th
 # Multiple tags
 /give @p blackcard:tag_black_card{bctag:["minecraft:logs","forge:ingots/iron"],targetCount:1}
 
-# With blacklist
+# Single blacklist item (string format)
 /give @p blackcard:tag_black_card{bctag:"minecraft:logs",targetCount:1,bcblacklist:"minecraft:crimson_stem"}
+
+# Multiple blacklist items (list format)
+/give @p blackcard:tag_black_card{bctag:"minecraft:logs",targetCount:1,bcblacklist:["minecraft:crimson_stem","minecraft:warped_stem","minecraft:stripped_crimson_stem"]}
 ```
 
 ### 3. Mod Black Card (`mod_black_card`)
@@ -53,42 +59,69 @@ Binds one or more mod IDs. **Shift + Scroll** to cycle through items from the mo
 # Multiple mods
 /give @p blackcard:mod_black_card{bcmodid:["mekanism","thermal"],targetCount:1}
 
-# With blacklist
-/give @p blackcard:mod_black_card{bcmodid:"mekanism",targetCount:1,bcblacklist:["mekanism:creative_bin"]}
+# Single blacklist item (string format)
+/give @p blackcard:mod_black_card{bcmodid:"mekanism",targetCount:1,bcblacklist:"mekanism:creative_bin"}
+
+# Multiple blacklist items (list format)
+/give @p blackcard:mod_black_card{bcmodid:"mekanism",targetCount:1,bcblacklist:["mekanism:creative_bin","mekanism:creative_energy_cube","mekanism:creative_fluid_tank"]}
 ```
 
 ---
 
 ## NBT Key Reference
 
-| New Key (v2.0) | Legacy Key (compatible) | Description | Cell⁴ Equivalent |
-|:---:|:---:|:---|:---:|
-| `bcitem` | `targetItem` | Item ID (string or list) | `cell4item` |
-| `bctag` | `targetTag` | Tag ID (string or list) | `cell4tag` |
-| `bcmodid` | `targetMod` | Mod ID (string or list) | `cell4modid` |
-| `bcblacklist` | — | Blacklisted item IDs (string or list) | `cell4blacklist` |
-| `targetCount` | `targetCount` | Crafting output count (int, default 1) | — |
-| `currentItemIndex` | `currentItemIndex` | Current cycle index (all cards with multi-value) | — |
-| `targetItem` | `targetItem` | Currently selected item ID (auto-synced) | — |
+| Key | Description | Cell⁴ Equivalent |
+|:---:|:---|:---:|
+| `bcitem` | Item ID (string or list) | `cell4item` |
+| `bctag` | Tag ID (string or list) | `cell4tag` |
+| `bcmodid` | Mod ID (string or list) | `cell4modid` |
+| `bcblacklist` | Blacklisted item IDs (string or list) | `cell4blacklist` |
+| `targetCount` | Crafting output count (int, default 1) | — |
+| `currentItemIndex` | Current cycle index (all cards with multi-value) | — |
+| `targetItem` | Currently selected item ID (auto-synced) | — |
 
-> All identifier keys support both **single string** and **string list** formats, fully consistent with Cell⁴'s NBT format. Legacy keys are automatically compatible.
+> All identifier keys support both **single string** and **string list** formats, fully consistent with Cell⁴'s NBT format.
 
 ---
 
 ## Blacklist
 
-All card types support the `bcblacklist` key to exclude specific items:
+All card types support the `bcblacklist` key to exclude specific items. The blacklist accepts both **single string** and **string list** formats — just like `bcitem`/`bctag`/`bcmodid`.
 
-- **Skipped** during crafting
+- **Skipped** during crafting — blacklisted items will never be produced
 - **Excluded** from cycling on all cards with multi-value bindings
 - Displayed with red markers in tooltips
 
 ```mcfunction
-# Single blacklist item
+# ─── Single blacklist item (string format) ───
+
+# Item Black Card: exclude one item
 /give @p blackcard:black_card{bcitem:"minecraft:diamond",bcblacklist:"minecraft:bedrock"}
 
-# Multiple blacklist items
-/give @p blackcard:mod_black_card{bcmodid:"mekanism",bcblacklist:["mekanism:creative_bin","mekanism:creative_energy_cube"]}
+# Tag Black Card: exclude one item from a tag
+/give @p blackcard:tag_black_card{bctag:"minecraft:logs",bcblacklist:"minecraft:crimson_stem"}
+
+# Mod Black Card: exclude one item from a mod
+/give @p blackcard:mod_black_card{bcmodid:"mekanism",bcblacklist:"mekanism:creative_bin"}
+
+# ─── Multiple blacklist items (list format) ───
+
+# Item Black Card: exclude multiple items
+/give @p blackcard:black_card{bcitem:["minecraft:diamond","minecraft:iron_ingot","minecraft:gold_ingot"],bcblacklist:["minecraft:bedrock","minecraft:command_block","minecraft:barrier"]}
+
+# Tag Black Card: exclude multiple items from a tag
+/give @p blackcard:tag_black_card{bctag:"minecraft:logs",bcblacklist:["minecraft:crimson_stem","minecraft:warped_stem","minecraft:stripped_crimson_stem","minecraft:stripped_warped_stem"]}
+
+# Mod Black Card: exclude multiple items from a mod
+/give @p blackcard:mod_black_card{bcmodid:"mekanism",bcblacklist:["mekanism:creative_bin","mekanism:creative_energy_cube","mekanism:creative_fluid_tank"]}
+
+# ─── Combined: multi-item binding + multi-blacklist ───
+
+# Multiple items with multiple blacklisted items
+/give @p blackcard:black_card{bcitem:["minecraft:diamond","minecraft:bedrock","minecraft:iron_ingot","minecraft:command_block"],bcblacklist:["minecraft:bedrock","minecraft:command_block"]}
+
+# Multiple mods with multiple blacklisted items across mods
+/give @p blackcard:mod_black_card{bcmodid:["mekanism","thermal"],bcblacklist:["mekanism:creative_bin","mekanism:creative_energy_cube","thermal:device_rock_gen","thermal:device_water_gen"]}
 ```
 
 ---

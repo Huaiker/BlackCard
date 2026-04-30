@@ -2,11 +2,10 @@ package blackcard.blackcard;
 
 import blackcard.blackcard.compat.cell4.Cell4IntegrationRecipe;
 import blackcard.blackcard.config.BlackCardConfig;
+import blackcard.blackcard.init.CreativeTabInit;
 import blackcard.blackcard.init.ItemInit;
 import blackcard.blackcard.network.NetworkHandler;
 import blackcard.blackcard.recipe.UniversalNBTRecipe;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -26,18 +25,10 @@ public class BlackCard {
         UniversalNBTRecipe.RECIPE_SERIALIZERS.register(modEventBus);
         Cell4IntegrationRecipe.RECIPE_SERIALIZERS.register(modEventBus);
 
+        // Register creative mode tab
+        CreativeTabInit.CREATIVE_MODE_TABS.register(modEventBus);
+
         // Register network communication
         NetworkHandler.register();
-
-        // Add items to creative mode tab
-        modEventBus.addListener(this::addItemsToTabs);
-    }
-
-    private void addItemsToTabs(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            event.accept(ItemInit.BLACK_CARD);
-            event.accept(ItemInit.TAG_BLACK_CARD);
-            event.accept(ItemInit.MOD_BLACK_CARD);
-        }
     }
 }

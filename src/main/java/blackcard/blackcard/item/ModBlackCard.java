@@ -32,9 +32,6 @@ import java.util.List;
  *   currentItemIndex: 整数（当前循环索引）
  *   targetItem: 字符串（自动同步，当前选中的物品ID）
  *   bcblacklist: "minecraft:bedrock" 或 ["minecraft:bedrock", "minecraft:command_block"]
- *
- * 兼容旧NBT格式：
- *   targetMod: "mekanism"（单字符串，自动兼容）
  */
 public class ModBlackCard extends Item {
 
@@ -60,8 +57,8 @@ public class ModBlackCard extends Item {
     public Component getName(ItemStack stack) {
         if (BlackCardConfig.COMMON.enableCustomDisplayName.get()) {
             CompoundTag tag = stack.getTag();
-            if (tag != null && tag.contains("targetItem", 8)) {
-                String targetItemId = tag.getString("targetItem");
+            if (tag != null && tag.contains(BlackCardUtil.NBT_TARGET_ITEM, 8)) {
+                String targetItemId = tag.getString(BlackCardUtil.NBT_TARGET_ITEM);
                 String targetItemName = BlackCardUtil.getItemLocalizedName(targetItemId);
 
                 String suffix = Component.translatable("item.blackcard.mod_black_card.suffix").getString();
@@ -92,8 +89,8 @@ public class ModBlackCard extends Item {
 
         // Display currently selected item
         CompoundTag tag = stack.getTag();
-        if (tag != null && tag.contains("targetItem", 8)) {
-            String targetItemId = tag.getString("targetItem");
+        if (tag != null && tag.contains(BlackCardUtil.NBT_TARGET_ITEM, 8)) {
+            String targetItemId = tag.getString(BlackCardUtil.NBT_TARGET_ITEM);
             String targetItemName = BlackCardUtil.getItemLocalizedName(targetItemId);
 
             tooltip.add(
@@ -157,7 +154,7 @@ public class ModBlackCard extends Item {
 
         Item selectedItem = items.get(currentIndex);
         ResourceLocation itemIdRL = BuiltInRegistries.ITEM.getKey(selectedItem);
-        tag.putString("targetItem", itemIdRL.toString());
+        tag.putString(BlackCardUtil.NBT_TARGET_ITEM, itemIdRL.toString());
     }
 
     /**
@@ -224,6 +221,6 @@ public class ModBlackCard extends Item {
 
         Item selectedItem = items.get(currentIndex);
         ResourceLocation itemIdRL = BuiltInRegistries.ITEM.getKey(selectedItem);
-        stack.getOrCreateTag().putString("targetItem", itemIdRL.toString());
+        stack.getOrCreateTag().putString(BlackCardUtil.NBT_TARGET_ITEM, itemIdRL.toString());
     }
 }

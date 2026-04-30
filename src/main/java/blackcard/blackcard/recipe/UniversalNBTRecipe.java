@@ -93,10 +93,10 @@ public class UniversalNBTRecipe extends CustomRecipe {
         var tag = stack.getTag();
         if (tag == null) return false;
 
-        // Check for new format keys (bcitem, bctag, bcmodid)
-        if (tag.contains(BlackCardUtil.NBT_ITEM) || tag.contains("targetItem")) return true;
-        if (tag.contains(BlackCardUtil.NBT_TAG) || tag.contains("targetTag")) return true;
-        if (tag.contains(BlackCardUtil.NBT_MODID) || tag.contains("targetMod")) return true;
+        // Check for v2.0 NBT keys (bcitem, bctag, bcmodid)
+        if (tag.contains(BlackCardUtil.NBT_ITEM)) return true;
+        if (tag.contains(BlackCardUtil.NBT_TAG)) return true;
+        if (tag.contains(BlackCardUtil.NBT_MODID)) return true;
 
         return false;
     }
@@ -127,9 +127,9 @@ public class UniversalNBTRecipe extends CustomRecipe {
      */
     private ItemStack resolveFromTargetItem(ItemStack cardStack) {
         var tag = cardStack.getTag();
-        if (tag == null || !tag.contains("targetItem", 8)) return ItemStack.EMPTY;
+        if (tag == null || !tag.contains(BlackCardUtil.NBT_TARGET_ITEM, 8)) return ItemStack.EMPTY;
 
-        String targetItemId = tag.getString("targetItem");
+        String targetItemId = tag.getString(BlackCardUtil.NBT_TARGET_ITEM);
 
         // Check blacklist
         if (BlackCardUtil.isBlacklisted(cardStack, targetItemId)) {

@@ -32,9 +32,6 @@ import java.util.List;
  *   targetItem: 字符串（自动同步，当前选中的物品ID）
  *   bcblacklist: "minecraft:bedrock" 或 ["minecraft:bedrock", "minecraft:command_block"]
  *
- * 兼容旧NBT格式：
- *   targetItem: "minecraft:diamond"（单字符串，自动兼容）
- *
  * 单物品时合成直接产出；多物品时合成产出当前选中物品
  */
 public class LocalizedBlackCard extends Item {
@@ -72,8 +69,8 @@ public class LocalizedBlackCard extends Item {
                 } else {
                     // Multiple items bound - show current selected item name
                     CompoundTag tag = stack.getTag();
-                    if (tag != null && tag.contains("targetItem", 8)) {
-                        String targetItemId = tag.getString("targetItem");
+                    if (tag != null && tag.contains(BlackCardUtil.NBT_TARGET_ITEM, 8)) {
+                        String targetItemId = tag.getString(BlackCardUtil.NBT_TARGET_ITEM);
                         String targetItemName = BlackCardUtil.getItemLocalizedName(targetItemId);
                         MutableComponent itemName = Component.literal(targetItemName).withStyle(ChatFormatting.WHITE);
                         MutableComponent suffixComp = Component.literal(" " + suffix).withStyle(ChatFormatting.YELLOW);
@@ -115,8 +112,8 @@ public class LocalizedBlackCard extends Item {
 
             // Display currently selected item
             CompoundTag tag = stack.getTag();
-            if (tag != null && tag.contains("targetItem", 8)) {
-                String targetItemId = tag.getString("targetItem");
+            if (tag != null && tag.contains(BlackCardUtil.NBT_TARGET_ITEM, 8)) {
+                String targetItemId = tag.getString(BlackCardUtil.NBT_TARGET_ITEM);
                 String targetItemName = BlackCardUtil.getItemLocalizedName(targetItemId);
                 tooltip.add(
                         Component.translatable("item.blackcard.black_card.generates", targetItemName)
@@ -144,8 +141,8 @@ public class LocalizedBlackCard extends Item {
             // Determine which item to check max stack size for
             String checkItemId;
             CompoundTag tag = stack.getTag();
-            if (tag != null && tag.contains("targetItem", 8)) {
-                checkItemId = tag.getString("targetItem");
+            if (tag != null && tag.contains(BlackCardUtil.NBT_TARGET_ITEM, 8)) {
+                checkItemId = tag.getString(BlackCardUtil.NBT_TARGET_ITEM);
             } else if (!itemIds.isEmpty()) {
                 checkItemId = itemIds.get(0);
             } else {
@@ -208,7 +205,7 @@ public class LocalizedBlackCard extends Item {
         BlackCardUtil.setCycleIndex(stack, currentIndex);
 
         String selectedId = availableIds.get(currentIndex);
-        stack.getOrCreateTag().putString("targetItem", selectedId);
+        stack.getOrCreateTag().putString(BlackCardUtil.NBT_TARGET_ITEM, selectedId);
     }
 
     /**
@@ -220,7 +217,7 @@ public class LocalizedBlackCard extends Item {
 
         if (itemIds.size() == 1) {
             // Single item: set targetItem directly
-            stack.getOrCreateTag().putString("targetItem", itemIds.get(0));
+            stack.getOrCreateTag().putString(BlackCardUtil.NBT_TARGET_ITEM, itemIds.get(0));
             return;
         }
 
@@ -235,7 +232,7 @@ public class LocalizedBlackCard extends Item {
         }
 
         String selectedId = availableIds.get(currentIndex);
-        stack.getOrCreateTag().putString("targetItem", selectedId);
+        stack.getOrCreateTag().putString(BlackCardUtil.NBT_TARGET_ITEM, selectedId);
     }
 
     /**
@@ -257,7 +254,7 @@ public class LocalizedBlackCard extends Item {
         ItemStack stack = new ItemStack(blackcard.blackcard.init.ItemInit.BLACK_CARD.get());
         BlackCardUtil.setString(stack, BlackCardUtil.NBT_ITEM, identifier);
         BlackCardUtil.setTargetCount(stack, count);
-        stack.getOrCreateTag().putString("targetItem", identifier);
+        stack.getOrCreateTag().putString(BlackCardUtil.NBT_TARGET_ITEM, identifier);
         return stack;
     }
 }
